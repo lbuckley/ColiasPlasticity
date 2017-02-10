@@ -66,6 +66,45 @@ for(site.k in 1:3){
   points(dat1gen3$yr, dat1gen3$Jpup, type="l", col="green")
   points(dat1gen3$yr, dat1gen3$Jadult, type="l", col="purple")  
   
+  #----------------------------
+  #plot significant regressions
+  mod1= summary(lm(dat1gen1$Jpup ~ dat1gen1$yr))
+  mod.p= mod1$coefficients[2,4]
+  if(mod.p<0.05)abline(mod1, col="green")
+  
+  mod1= summary(lm(dat1gen1$Jadult ~ dat1gen1$yr))
+  mod.p= mod1$coefficients[2,4]
+  if(mod.p<0.05)abline(mod1, col="purple")
+  
+  mod1= summary(lm(dat1gen2$Jlarv ~ dat1gen2$yr))
+  mod.p= mod1$coefficients[2,4]
+  if(mod.p<0.05)abline(mod1, col="orange")
+
+  mod1= summary(lm(dat1gen2$Jpup ~ dat1gen2$yr))
+  mod.p= mod1$coefficients[2,4]
+  if(mod.p<0.05)abline(mod1, col="green")
+  
+  mod1= summary(lm(dat1gen2$Jadult ~ dat1gen2$yr))
+  mod.p= mod1$coefficients[2,4]
+  if(mod.p<0.05)abline(mod1, col="purple")  
+  
+  if(!all(is.na(dat1gen3$Jlarv)) ){
+  mod1= summary(lm(dat1gen3$Jlarv ~ dat1gen3$yr))
+  mod.p= mod1$coefficients[2,4]
+  if(mod.p<0.05)abline(mod1, col="orange")}
+  
+  if(!all(is.na(dat1gen3$Jpup)) ){
+  mod1= summary(lm(dat1gen3$Jpup ~ dat1gen3$yr))
+  mod.p= mod1$coefficients[2,4]
+  if(mod.p<0.05)abline(mod1, col="green")}
+  
+  if(!all(is.na(dat1gen3$Jadult)) ){
+  mod1= summary(lm(dat1gen3$Jadult ~ dat1gen3$yr))
+  mod.p= mod1$coefficients[2,4]
+  if(mod.p<0.05)abline(mod1, col="purple")}
+  
+  #----------------------------
+  
   #plot fixed
   ys= as.numeric(as.vector(c(dat1gen1.f[1,4:6], dat1gen2.f[1,4:6],dat1gen3.f[1,4:6])))
   cols= c("orange","green","purple")
@@ -82,7 +121,7 @@ for(site.k in 1:3){
 #----------------------------------------------
 #TEMPS
   
-  if(site.k %in% c(2)) plot(dat1gen1$yr, dat1gen1$Tpup, type="l", ylim= range(10,35), col="blue", ylab="Tpupal (°C)",xlab="Year")
+  if(site.k %in% c(2)) plot(dat1gen1$yr, dat1gen1$Tpup, type="l", ylim= range(10,35), col="blue", ylab="Tpupal (?C)",xlab="Year")
   #NO LABELS
   if(site.k %in% c(1,3)) plot(dat1gen1$yr, dat1gen1$Tpup, type="l", ylim= range(10,35), col="blue", ylab="",xlab="Year")
 
@@ -92,6 +131,35 @@ points(dat1gen3$yr, dat1gen3$Tpup, type="l", col="red")
 points(dat1gen1.f$yr, dat1gen1.f$Tpup, type="l", col="blue", lty="dashed")  
 points(dat1gen2.f$yr, dat1gen2.f$Tpup, type="l", col="orange", lty="dashed")
 points(dat1gen3.f$yr, dat1gen3.f$Tpup, type="l", col="red", lty="dashed")  
+
+#----------------------------
+#plot significant regressions
+mod1= summary(lm(dat1gen1$Tpup ~ dat1gen1$yr))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="blue")
+
+mod1= summary(lm(dat1gen2$Tpup ~ dat1gen2$yr))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="orange")
+
+if(!all(is.na(dat1gen3$Tpup)) ){
+mod1= summary(lm(dat1gen3$Tpup ~ dat1gen3$yr))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="red")}
+#-----
+mod1= summary(lm(dat1gen1.f$Tpup ~ dat1gen1.f$yr))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="blue", lty="dashed")
+
+mod1= summary(lm(dat1gen2.f$Tpup ~ dat1gen2.f$yr))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="orange", lty="dashed")
+
+if(!all(is.na(dat1gen3$Tpup)) ){
+mod1= summary(lm(dat1gen3.f$Tpup ~ dat1gen3.f$yr))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="red", lty="dashed")}
+#----------------------------
 
 if(site.k==1) legend("topleft", legend=c("gen 1", "gen 2", "gen 3"), lty=c("solid","solid","solid"), col=c("blue","orange","red"), cex=1.5, bty="n")
 
@@ -117,21 +185,41 @@ Tpup1.3= Tpup1.3 -mean(Tpup1.3)
 xlims= range(na.omit(Tpup1.1,Tpup1.2,Tpup1.3), na.omit(Tdif1.1,Tdif1.2,Tdif1.3))
 ylims= xlims #range(na.omit(Tdif1.1,Tdif1.2,Tdif1.3))
 
-if(site.k %in% c(2)) plot(Tpup1.1, Tdif1.1, col="blue", xlim=xlims, ylim=ylims, xlab="Tpupal anomaly (fixed phenology, °C)",ylab="Tpupal shift by plasticity (°C)")
+if(site.k %in% c(2)) plot(Tpup1.1, Tdif1.1, col="blue", xlim=xlims, ylim=ylims, xlab="Tpupal anomaly (fixed phenology, ?C)",ylab="Tpupal shift by plasticity (?C)")
 # NO X-LABEL
-if(site.k %in% c(1,3)) plot(Tpup1.1, Tdif1.1, col="blue", xlim=xlims, ylim=ylims, xlab="Tpupal anomaly (fixed phenology, °C)",ylab="")
+if(site.k %in% c(1,3)) plot(Tpup1.1, Tdif1.1, col="blue", xlim=xlims, ylim=ylims, xlab="Tpupal anomaly (fixed phenology, ?C)",ylab="")
 
 points(Tpup1.2, Tdif1.2, col="orange")
 points(Tpup1.3, Tdif1.3, col="red")
 
 abline(h=0, col="grey", lwd=1); abline(v=0, col="grey", lwd=1)
 
+#Plot 1:1 line
+abline(a=0,b=-1, col="gray")
+
 #legend("bottomleft", legend=c("gen 1", "gen 2", "gen 3"),pch=c("*","*",'*'), col=c("blue","orange","red"))
+
+#----------------------------
+#plot significant regressions
+mod1= summary(lm(Tdif1.1 ~ Tpup1.1))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="blue")
+
+mod1= summary(lm(Tdif1.2 ~ Tpup1.2))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="orange")
+
+if(!all(is.na(Tdif1.3)) ){
+mod1= summary(lm(Tdif1.3 ~ Tpup1.3))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="red")}
+
+#----------------------------
 
 } #end loop sites
 
 #add y-axis labels
-mtext(c("Year", "Year", "Tpupal anomaly (fixed phenology, °C)"), side=1, line=1, outer=TRUE, cex=1.3,at=c(0.2,0.5,0.8))
+mtext(c("Year", "Year", "Tpupal anomaly (fixed phenology, ?C)"), side=1, line=1, outer=TRUE, cex=1.3,at=c(0.2,0.5,0.8))
 
 dev.off()
 
@@ -181,7 +269,7 @@ Tad1.3= Tad1.3 -mean(Tad1.3)
 
 xlims= range(na.omit(Tad1.1,Tad1.2,Tad1.3), na.omit(Tdif1.1,Tdif1.2,Tdif1.3))
 ylims= xlims #range(na.omit(Tdif1.1,Tdif1.2,Tdif1.3))
-plot(Tad1.1, Tdif1.1, col="blue", xlim=xlims, ylim=ylims, xlab="Tpupal anomaly (fixed phenology, °C)",ylab="Shift in Tad due to plasticity (°C)")
+plot(Tad1.1, Tdif1.1, col="blue", xlim=xlims, ylim=ylims, xlab="Tpupal anomaly (fixed phenology, ?C)",ylab="Shift in Tad due to plasticity (?C)")
 points(Tad1.2, Tdif1.2, col="orange")
 points(Tad1.3, Tdif1.3, col="red")
 
