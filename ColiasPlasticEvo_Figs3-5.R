@@ -105,8 +105,8 @@ with(Mn.g3,lines(year,meanLambda,lty=1, lwd= 2, col="red"))
 #Plots and analyses of evo output, plasticity but no evolution
 #Variable phenology only, C1, 51713, and Montrose sites
 ## C1 site
-
-Evo.C1 <- read.csv(file="Evo.output.Site1.Fixed.2gens.yesPlasticnoEvo.csv", header =T)
+setwd(paste(fdir, "\\OUT\\", sep=""))
+Evo.C1 <- read.csv(file="Evo.output.Site1.Varying.2gens.yesPlasticnoEvo.csv", header =T)
 
 #find ranges
 range(Evo.C1$beta)
@@ -118,6 +118,15 @@ C1.g1 <- subset(Evo.C1,generation==1)
 C1.g2 <- subset(Evo.C1,generation==2)
 #C1.g3 <- subset(Evo.C1,generation==3)
 
+#--------
+#Fixed
+Evo.C1 <- read.csv(file="Evo.output.Site1.Fixed.2gens.yesPlasticnoEvo.csv", header =T)
+# plots of beta, alphaopt and fitness for each generation, as functions of year
+C1.g1.f <- subset(Evo.C1,generation==1)
+C1.g2.f <- subset(Evo.C1,generation==2)
+#C1.g3 <- subset(Evo.C1,generation==3)
+
+#----------------------------
 #51713 site = CC site
 
 Evo.CC <- read.csv(file="Evo.output.Site51713.Varying.3gens.yesPlasticnoEvo.csv", header =T)
@@ -131,6 +140,14 @@ CC.g1 <- subset(Evo.CC,generation==1)
 CC.g2 <- subset(Evo.CC,generation==2)
 CC.g3 <- subset(Evo.CC,generation==3)
 
+#--------
+#Fixed
+Evo.CC <- read.csv(file="Evo.output.Site51713.Fixed.3gens.yesPlasticnoEvo.csv", header =T)
+CC.g1.f <- subset(Evo.CC,generation==1)
+CC.g2.f <- subset(Evo.CC,generation==2)
+CC.g3.f <- subset(Evo.CC,generation==3)
+
+#----------------------------
 ##Montrose site
 Evo.Mn <- read.csv(file="Evo.output.Site55722.Varying.3gens.yesPlasticnoEvo.csv", header =T)
 names(Evo.Mn)
@@ -145,31 +162,65 @@ Mn.g1 <- subset(Evo.Mn,generation==1)
 Mn.g2 <- subset(Evo.Mn,generation==2)
 Mn.g3 <- subset(Evo.Mn,generation==3)
 
+#--------
+#Fixed
+Evo.Mn <- read.csv(file="Evo.output.Site55722.Fixed.3gens.yesPlasticnoEvo.csv", header =T)
+Mn.g1.f <- subset(Evo.Mn,generation==1)
+Mn.g2.f <- subset(Evo.Mn,generation==2)
+Mn.g3.f <- subset(Evo.Mn,generation==3)
+
 #=============================================
 ##The plots
 setwd(paste(fdir, "Figures\\", sep="") )
 
 pdf("Fig3_SelectionEvolution.pdf", height=10,width=10)
 
-par(mfrow=c(3,3))
+par(mfrow=c(3,2))
 par(cex.lab=2,cex.axis=1.7, lwd=1.5)
 par(mar = c(1.4,4.5,1,0.5)) #This changes the margin of space around each plot, the default is 4. 1=bottom, 2=left, 3=top, 4=right
 par(oma=c(2,0,0,0), bty="o")
 #par(mfrow=c(1,2), lwd=2, mgp=c(1.5,0.5,0), mar=c(2.5,2.5,2,1), cex=1.2, cex.lab=0.8,cex.main=0.8, oma=c(0,0,0,0))
 
+#C1
 with(C1.g1,plot(year,beta,type = "l", lwd= 2, col="blue", ylab="", xlab="Year", xlim=c(1960,2010), ylim=c(-1.8,3.5))) #cx.lab changes the size of the axis labels
 abline(h=0,lty=2)#Horizontal line at 0 
 with(C1.g2,lines(year,beta,lty=1, lwd= 2, col="orange")) 
 text(1980,3.3,"3.0km", cex=2)
+#add fixed
+with(C1.g1.f,lines(year,beta,lty=1, lwd= 2, col="lightblue"))
+with(C1.g2.f,lines(year,beta,lty=1, lwd= 2, col="gold")) 
 
 legend("topright", legend=c("gen 1", "gen 2", "gen 3"), lty=c("solid","solid","solid"), col=c("blue","orange","red"), cex=1.5, bty="n")
 
+#----------------------------
+#ABS
 with(C1.g1,plot(year,meanAbs,type = "l", lwd= 2, col="blue",  xlab="Year",ylab = "",xlim=c(1960,2010), ylim=c(0.4,0.7), yaxt="n"))
 with(C1.g2, lines(year,meanAbs, lty=1, lwd=2,col="orange"))
 axis(2, seq(0.4,0.7,0.1), seq(0.4,0.7,0.1))
+#add fixed
+with(C1.g1.f,lines(year,meanAbs,lty=1, lwd= 2, col="lightblue"))
+with(C1.g2.f,lines(year,meanAbs,lty=1, lwd= 2, col="gold")) 
 
-with(C1.g1,plot(year,meanLambda,type = "l", lwd= 2, col="blue",  xlab="Year",ylab = "",xlim=c(1960,2010), ylim=c(1,2.4)))
-with(C1.g2,lines(year,meanLambda,lty=1, lwd= 2, col="orange")) 
+#plot significant regressions
+mod1= summary(lm(C1.g1$meanAbs ~ C1.g1$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="blue")
+mod1= summary(lm(C1.g2$meanAbs ~ C1.g2$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="orange")
+mod1= summary(lm(C1.g1.f$meanAbs ~ C1.g1.f$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="lightblue")
+mod1= summary(lm(C1.g2.f$meanAbs ~ C1.g2.f$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="gold")
+
+#with(C1.g1,plot(year,meanAbs,type = "l", lwd= 2, col="blue",  xlab="Year",ylab = "",xlim=c(1960,2010), ylim=c(0.4,0.7), yaxt="n"))
+#with(C1.g2, lines(year,meanAbs, lty=1, lwd=2,col="orange"))
+#axis(2, seq(0.4,0.7,0.1), seq(0.4,0.7,0.1))
+
+#with(C1.g1,plot(year,meanLambda,type = "l", lwd= 2, col="blue",  xlab="Year",ylab = "",xlim=c(1960,2010), ylim=c(1,2.4)))
+#with(C1.g2,lines(year,meanLambda,lty=1, lwd= 2, col="orange")) 
 
 #CC site
 with(CC.g1,plot(year,beta,type = "l", lwd= 2, col="blue", ylab="Directional Selection", xlab="Year", xlim=c(1960,2010), ylim=c(-1.8,3.5))) #cx.lab changes the size of the axis labels
@@ -177,15 +228,43 @@ abline(h=0,lty=2)#Horizontal line at 0
 with(CC.g2,lines(year,beta,lty=1, lwd= 2, col="orange")) 
 with(CC.g3,lines(year,beta,lty=1, lwd= 2, col="red")) 
 text(1980,3.3,"2.4km", cex=2)
+#add fixed
+with(CC.g1.f,lines(year,beta,lty=1, lwd= 2, col="lightblue"))
+with(CC.g2.f,lines(year,beta,lty=1, lwd= 2, col="gold")) 
+with(CC.g3.f,lines(year,beta,lty=1, lwd= 2, col="pink")) 
 
+#ABS
 with(CC.g1,plot(year,meanAbs,type = "l", lwd= 2, col="blue",  xlab="Year",ylab = "Absorptivity",xlim=c(1960,2010), ylim=c(0.4,0.7), yaxt="n"))
 with(CC.g2, lines(year,meanAbs, lty=1, lwd=2,col="orange"))
 with(CC.g3, lines(year,meanAbs, lty=1, lwd=2,col="red"))
 axis(2, seq(0.4,0.7,0.1), seq(0.4,0.7,0.1))
+#add fixed
+with(CC.g1.f,lines(year,meanAbs,lty=1, lwd= 2, col="lightblue"))
+with(CC.g2.f,lines(year,meanAbs,lty=1, lwd= 2, col="gold")) 
+with(CC.g3.f,lines(year,meanAbs,lty=1, lwd= 2, col="pink")) 
 
-with(CC.g1,plot(year,meanLambda,type = "l", lwd= 2, col="blue",  xlab="Year",ylab = "Mean Fitness",xlim=c(1960,2010), ylim=c(1,2.4)))
-with(CC.g2,lines(year,meanLambda,lty=1, lwd= 2, col="orange")) 
-with(CC.g3,lines(year,meanLambda,lty=1, lwd= 2, col="red")) 
+#plot significant regressions
+mod1= summary(lm(CC.g1$meanAbs ~ CC.g1$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="blue")
+mod1= summary(lm(CC.g2$meanAbs ~ CC.g2$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="orange")
+mod1= summary(lm(CC.g1.f$meanAbs ~ CC.g1.f$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="lightblue")
+mod1= summary(lm(CC.g2.f$meanAbs ~ CC.g2.f$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="gold")
+
+#with(CC.g1,plot(year,meanAbs,type = "l", lwd= 2, col="blue",  xlab="Year",ylab = "Absorptivity",xlim=c(1960,2010), ylim=c(0.4,0.7), yaxt="n"))
+#with(CC.g2, lines(year,meanAbs, lty=1, lwd=2,col="orange"))
+#with(CC.g3, lines(year,meanAbs, lty=1, lwd=2,col="red"))
+#axis(2, seq(0.4,0.7,0.1), seq(0.4,0.7,0.1))
+
+#with(CC.g1,plot(year,meanLambda,type = "l", lwd= 2, col="blue",  xlab="Year",ylab = "Mean Fitness",xlim=c(1960,2010), ylim=c(1,2.4)))
+#with(CC.g2,lines(year,meanLambda,lty=1, lwd= 2, col="orange")) 
+#with(CC.g3,lines(year,meanLambda,lty=1, lwd= 2, col="red")) 
 
 ##Montrose site
 with(Mn.g1,plot(year,beta,type = "l", lwd= 2, col="blue", ylab="", xlab="Year", xlim=c(1960,2010), ylim=c(-1.8,3.5))) #cx.lab changes the size of the axis labels
@@ -193,15 +272,43 @@ abline(h=0,lty=2)#Horizontal line at 0
 with(Mn.g2,lines(year,beta,lty=1, lwd= 2, col="orange")) 
 with(Mn.g3,lines(year,beta,lty=1, lwd= 2, col="red")) 
 text(1980,3.3,"1.8km", cex=2)
+#add fixed
+with(Mn.g1.f,lines(year,beta,lty=1, lwd= 2, col="lightblue"))
+with(Mn.g2.f,lines(year,beta,lty=1, lwd= 2, col="gold")) 
+with(Mn.g3.f,lines(year,beta,lty=1, lwd= 2, col="pink"))
 
+#ABS
 with(Mn.g1,plot(year,meanAbs,type = "l", lwd= 2, col="blue",  xlab="Year",ylab = "",xlim=c(1960,2010), ylim=c(0.4,0.7), yaxt="n"))
 with(Mn.g2, lines(year,meanAbs, lty=1, lwd=2,col="orange"))
 with(Mn.g3, lines(year,meanAbs, lty=1, lwd=2,col="red"))
 axis(2, seq(0.4,0.7,0.1), seq(0.4,0.7,0.1))
+#add fixed
+with(Mn.g1.f,lines(year,meanAbs,lty=1, lwd= 2, col="lightblue"))
+with(Mn.g2.f,lines(year,meanAbs,lty=1, lwd= 2, col="gold")) 
+with(Mn.g3.f,lines(year,meanAbs,lty=1, lwd= 2, col="pink"))
 
-with(Mn.g1,plot(year,meanLambda,type = "l", lwd= 2, col="blue",  xlab="Year",ylab = "",xlim=c(1960,2010), ylim=c(1,2.4)))
-with(Mn.g2,lines(year,meanLambda,lty=1, lwd= 2, col="orange")) 
-with(Mn.g3,lines(year,meanLambda,lty=1, lwd= 2, col="red")) 
+#plot significant regressions
+mod1= summary(lm(Mn.g1$meanAbs ~ Mn.g1$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="blue")
+mod1= summary(lm(Mn.g2$meanAbs ~ Mn.g2$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="orange")
+mod1= summary(lm(Mn.g1.f$meanAbs ~ Mn.g1.f$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="lightblue")
+mod1= summary(lm(Mn.g2.f$meanAbs ~ Mn.g2.f$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="gold")
+
+#with(Mn.g1,plot(year,meanAbs,type = "l", lwd= 2, col="blue",  xlab="Year",ylab = "",xlim=c(1960,2010), ylim=c(0.4,0.7), yaxt="n"))
+#with(Mn.g2, lines(year,meanAbs, lty=1, lwd=2,col="orange"))
+#with(Mn.g3, lines(year,meanAbs, lty=1, lwd=2,col="red"))
+#axis(2, seq(0.4,0.7,0.1), seq(0.4,0.7,0.1))
+
+#with(Mn.g1,plot(year,meanLambda,type = "l", lwd= 2, col="blue",  xlab="Year",ylab = "",xlim=c(1960,2010), ylim=c(1,2.4)))
+#with(Mn.g2,lines(year,meanLambda,lty=1, lwd= 2, col="orange")) 
+#with(Mn.g3,lines(year,meanLambda,lty=1, lwd= 2, col="red")) 
 
 #add y-axis labels
 mtext("Year", side=1, line=1, outer=TRUE, cex=1.5)
@@ -337,68 +444,71 @@ setwd(paste(fdir, "Figures\\", sep="") )
 
 pdf("Fig5_GeomFitness.pdf", height=10,width=10)
 
-par(mfcol=c(3,2))
-par(cex.lab=1.5,cex.axis=1.6, lwd=1.5)
-par(mar = c(1.4,2.3,1,0.5)) #This changes the margin of space around each plot, the default is 4. 1=bottom, 2=left, 3=top, 4=right
+par(mfcol=c(3,3))
+par(cex.lab=1.6,cex.axis=1.6, lwd=1.5)
+par(mar = c(1.4,4.2,1,0.5)) #This changes the margin of space around each plot, the default is 4. 1=bottom, 2=left, 3=top, 4=right
 par(oma=c(2.3,2,2,0), bty="o")
 #par(mfrow=c(1,2), lwd=2, mgp=c(1.5,0.5,0), mar=c(2.5,2.5,2,1), cex=1.2, cex.lab=0.8,cex.main=0.8, oma=c(0,0,0,0))
 
 #FIXED
 #3.0km fixed
-with(C1.GmeanFit,plot(Year,CfDpPnE,type = "l", lwd= 2, col="black", ylab="Geom Mean Fitness", xlab="Year", xlim=c(1960,2010), ylim=c(1.4,2.3))) #cx.lab changes the size of the axis labels
+with(C1.GmeanFit,plot(Year,CfDpPnE,type = "l", lwd= 2, col="black", ylab="", xlab="Year", xlim=c(1960,2010), ylim=c(1.4,2.3))) #cx.lab changes the size of the axis labels
 with(C1.GmeanFit,lines(Year,CfDyPnE,lty=1, lwd= 2, col="green")) 
 with(C1.GmeanFit,lines(Year,CfDnPyE,lty=1, lwd= 2, col="orange")) 
 with(C1.GmeanFit,lines(Year,CfDyPyE,lty=1, lwd= 2, col="purple")) 
 with(C1.GmeanFit,lines(Year,CfDnPnE,lty=1, lwd= 2, col="red")) 
 with(C1.GmeanFit,lines(Year,CfDePyE,lty=1, lwd= 2, col="blue")) 
+text(1965,1.5,"3.0km", cex=2)
 
-legend(1975,1.8,cex=1.5,bty = "n",c("Perfect plasticity","Observed plasticity","Evolution of absorptivity","Evolution with observed plasticity","Constant absorptivity","Evolution of plasticity"),lty=c(1,1,1,1,1,1),col=c("black","green","orange","purple","red","blue") )
+legend(1972,1.78,cex=1.3,bty = "n",c("Constant absorptivity", "Perfect plasticity","Observed plasticity", "Evol of absorptivity","Evol with plasticity","Evol of plasticity"),lty=c(1,1,1,1,1,1),col=c("red","black","green","orange","purple","blue") )
 
 #2.4km fixed
-with(Gu.GmeanFit,plot(Year,GfDpPnE,type = "l", lwd= 2, col="black", ylab="Geom Mean Fitness", xlab="Year", xlim=c(1960,2010), ylim=c(1.4,2.3))) #cx.lab changes the size of the axis labels
+with(Gu.GmeanFit,plot(Year,GfDpPnE,type = "l", lwd= 2, col="black", ylab="Geometric Mean Fitness", xlab="Year", xlim=c(1960,2010), ylim=c(1.4,2.3))) #cx.lab changes the size of the axis labels
 with(Gu.GmeanFit,lines(Year,GfDyPnE,lty=1, lwd= 2, col="green")) 
 with(Gu.GmeanFit,lines(Year,GfDnPyE,lty=1, lwd= 2, col="orange")) 
 with(Gu.GmeanFit,lines(Year,GfDyPyE,lty=1, lwd= 2, col="purple")) 
 with(Gu.GmeanFit,lines(Year,GfDnPnE,lty=1, lwd= 2, col="red")) 
 with(Gu.GmeanFit,lines(Year,GfDePyE,lty=1, lwd= 2, col="blue")) 
+text(1965,1.5,"2.4km", cex=2)
 
 #1.8km fixed
-with(Mn.GmeanFit,plot(Year,MfDpPnE,type = "l", lwd= 2, col="black", ylab="Geom Mean Fitness", xlab="Year", xlim=c(1960,2010), ylim=c(1.1,2.3))) #cx.lab changes the size of the axis labels
+with(Mn.GmeanFit,plot(Year,MfDpPnE,type = "l", lwd= 2, col="black", ylab="", xlab="Year", xlim=c(1960,2010), ylim=c(1.4,2.3))) #cx.lab changes the size of the axis labels
 with(Mn.GmeanFit,lines(Year,MfDyPnE,lty=1, lwd= 2, col="green")) 
 with(Mn.GmeanFit,lines(Year,MfDnPyE,lty=1, lwd= 2, col="orange")) 
 with(Mn.GmeanFit,lines(Year,MfDyPyE,lty=1, lwd= 2, col="purple")) 
 with(Mn.GmeanFit,lines(Year,MfDnPnE,lty=1, lwd= 2, col="red")) 
 with(Mn.GmeanFit,lines(Year,MfDePyE,lty=1, lwd= 2, col="blue")) 
+text(1965,1.5,"1.8km", cex=2)
 
 #----------------------
 #VARYING
 
-#3.0km varying
-with(C1.GmeanFit,plot(Year,CvDpPnE,type = "l", lwd= 2, col="black", ylab="Geom Mean Fitness", xlab="Year", xlim=c(1960,2010), ylim=c(1.4,2.3))) #cx.lab changes the size of the axis labels
-with(C1.GmeanFit,lines(Year,CvDyPnE,lty=1, lwd= 2, col="green")) 
-with(C1.GmeanFit,lines(Year,CvDnPyE,lty=1, lwd= 2, col="orange")) 
-with(C1.GmeanFit,lines(Year,CvDyPyE,lty=1, lwd= 2, col="purple")) 
-with(C1.GmeanFit,lines(Year,CvDnPnE,lty=1, lwd= 2, col="red")) 
-with(C1.GmeanFit,lines(Year,CvDePyE,lty=1, lwd= 2, col="blue")) 
-text(1965,1.5,"3.0km", cex=2)
+##3.0km varying
+#with(C1.GmeanFit,plot(Year,CvDpPnE,type = "l", lwd= 2, col="black", ylab="Geom Mean Fitness", xlab="Year", xlim=c(1960,2010), ylim=c(1.4,2.3))) #cx.lab changes the size of the axis labels
+#with(C1.GmeanFit,lines(Year,CvDyPnE,lty=1, lwd= 2, col="green")) 
+#with(C1.GmeanFit,lines(Year,CvDnPyE,lty=1, lwd= 2, col="orange")) 
+#with(C1.GmeanFit,lines(Year,CvDyPyE,lty=1, lwd= 2, col="purple")) 
+#with(C1.GmeanFit,lines(Year,CvDnPnE,lty=1, lwd= 2, col="red")) 
+#with(C1.GmeanFit,lines(Year,CvDePyE,lty=1, lwd= 2, col="blue")) 
+#text(1965,1.5,"3.0km", cex=2)
 
-#2.4km varying
-with(Gu.GmeanFit,plot(Year,GvDpPnE,type = "l", lwd= 2, col="black", ylab="Geom Mean Fitness", xlab="Year", xlim=c(1960,2010), ylim=c(1.4,2.3))) #cx.lab changes the size of the axis labels
-with(Gu.GmeanFit,lines(Year,GvDyPnE,lty=1, lwd= 2, col="green")) 
-with(Gu.GmeanFit,lines(Year,GvDnPyE,lty=1, lwd= 2, col="orange")) 
-with(Gu.GmeanFit,lines(Year,GvDyPyE,lty=1, lwd= 2, col="purple")) 
-with(Gu.GmeanFit,lines(Year,GvDnPnE,lty=1, lwd= 2, col="red")) 
-with(Gu.GmeanFit,lines(Year,GvDePyE,lty=1, lwd= 2, col="blue")) 
-text(1965,1.5,"2.4km", cex=2)
+##2.4km varying
+#with(Gu.GmeanFit,plot(Year,GvDpPnE,type = "l", lwd= 2, col="black", ylab="Geom Mean Fitness", xlab="Year", xlim=c(1960,2010), ylim=c(1.4,2.3))) #cx.lab changes the size of the axis labels
+#with(Gu.GmeanFit,lines(Year,GvDyPnE,lty=1, lwd= 2, col="green")) 
+#with(Gu.GmeanFit,lines(Year,GvDnPyE,lty=1, lwd= 2, col="orange")) 
+#with(Gu.GmeanFit,lines(Year,GvDyPyE,lty=1, lwd= 2, col="purple")) 
+#with(Gu.GmeanFit,lines(Year,GvDnPnE,lty=1, lwd= 2, col="red")) 
+#with(Gu.GmeanFit,lines(Year,GvDePyE,lty=1, lwd= 2, col="blue")) 
+#text(1965,1.5,"2.4km", cex=2)
 
-#1.8km varying
-with(Mn.GmeanFit,plot(Year,MvDpPnE,type = "l", lwd= 2, col="black", ylab="Geom Mean Fitness", xlab="Year", xlim=c(1960,2010), ylim=c(1.1,2.3))) #cx.lab changes the size of the axis labels
-with(Mn.GmeanFit,lines(Year,MvDyPnE,lty=1, lwd= 2, col="green")) 
-with(Mn.GmeanFit,lines(Year,MvDnPyE,lty=1, lwd= 2, col="orange")) 
-with(Mn.GmeanFit,lines(Year,MvDyPyE,lty=1, lwd= 2, col="purple")) 
-with(Mn.GmeanFit,lines(Year,MvDnPnE,lty=1, lwd= 2, col="red")) 
-with(Mn.GmeanFit,lines(Year,MvDePyE,lty=1, lwd= 2, col="blue")) 
-text(1965,1.2,"1.8km", cex=2)
+##1.8km varying
+#with(Mn.GmeanFit,plot(Year,MvDpPnE,type = "l", lwd= 2, col="black", ylab="Geom Mean Fitness", xlab="Year", xlim=c(1960,2010), ylim=c(1.1,2.3))) #cx.lab changes the size of the axis labels
+#with(Mn.GmeanFit,lines(Year,MvDyPnE,lty=1, lwd= 2, col="green")) 
+#with(Mn.GmeanFit,lines(Year,MvDnPyE,lty=1, lwd= 2, col="orange")) 
+#with(Mn.GmeanFit,lines(Year,MvDyPyE,lty=1, lwd= 2, col="purple")) 
+#with(Mn.GmeanFit,lines(Year,MvDnPnE,lty=1, lwd= 2, col="red")) 
+#with(Mn.GmeanFit,lines(Year,MvDePyE,lty=1, lwd= 2, col="blue")) 
+#text(1965,1.2,"1.8km", cex=2)
 
 #----------------------
 #RELATIVE TO CONSTANT PLASTICITY
@@ -412,11 +522,12 @@ C1.GmeanFit$CfDpPnE.rel = C1.GmeanFit$CfDpPnE - C1.GmeanFit$CfDnPnE
 C1.GmeanFit$CfDyPyE.rel = C1.GmeanFit$CfDyPyE - C1.GmeanFit$CfDnPnE
 C1.GmeanFit$CfDePyE.rel = C1.GmeanFit$CfDePyE - C1.GmeanFit$CfDnPnE
 
-with(C1.GmeanFit,plot(Year,CfDpPnE.rel,type = "l", lwd= 2, col="black", ylab="Geom Mean Fitness", xlab="Year", xlim=c(1960,2010), ylim=c(-0.1,0.3))) #cx.lab changes the size of the axis labels
+with(C1.GmeanFit,plot(Year,CfDpPnE.rel,type = "l", lwd= 2, col="black", ylab="", xlab="Year", xlim=c(1960,2010), ylim=c(-0.3,0.5))) #cx.lab changes the size of the axis labels
 with(C1.GmeanFit,lines(Year,CfDyPnE.rel,lty=1, lwd= 2, col="green")) 
 with(C1.GmeanFit,lines(Year,CfDnPyE.rel,lty=1, lwd= 2, col="orange")) 
 with(C1.GmeanFit,lines(Year,CfDyPyE.rel,lty=1, lwd= 2, col="purple")) 
 with(C1.GmeanFit,lines(Year,CfDePyE.rel,lty=1, lwd= 2, col="blue")) 
+abline(h=0, col="grey")
 
 legend(1975,1.8,cex=1.5,bty = "n",c("Perfect plasticity","Observed plasticity","Evolution of absorptivity","Evolution with observed plasticity","Constant absorptivity","Evolution of plasticity"),lty=c(1,1,1,1,1,1),col=c("black","green","orange","purple","red","blue") )
 
@@ -427,11 +538,12 @@ Gu.GmeanFit$GfDpPnE.rel = Gu.GmeanFit$GfDpPnE - Gu.GmeanFit$GfDnPnE
 Gu.GmeanFit$GfDyPyE.rel = Gu.GmeanFit$GfDyPyE - Gu.GmeanFit$GfDnPnE
 Gu.GmeanFit$GfDePyE.rel = Gu.GmeanFit$GfDePyE - Gu.GmeanFit$GfDnPnE
 
-with(Gu.GmeanFit,plot(Year,GfDpPnE.rel,type = "l", lwd= 2, col="black", ylab="Geom Mean Fitness", xlab="Year", xlim=c(1960,2010), ylim=c(-0.1,0.3))) #cx.lab changes the size of the axis labels
+with(Gu.GmeanFit,plot(Year,GfDpPnE.rel,type = "l", lwd= 2, col="black", ylab="Relative Geometric Mean Fitness", xlab="Year", xlim=c(1960,2010), ylim=c(-0.3,0.5))) #cx.lab changes the size of the axis labels
 with(Gu.GmeanFit,lines(Year,GfDyPnE.rel,lty=1, lwd= 2, col="green")) 
 with(Gu.GmeanFit,lines(Year,GfDnPyE.rel,lty=1, lwd= 2, col="orange")) 
 with(Gu.GmeanFit,lines(Year,GfDyPyE.rel,lty=1, lwd= 2, col="purple")) 
 with(Gu.GmeanFit,lines(Year,GfDePyE.rel,lty=1, lwd= 2, col="blue")) 
+abline(h=0, col="grey")
 
 #1.8km fixed
 Mn.GmeanFit$MfDyPnE.rel= Mn.GmeanFit$MfDyPnE - Mn.GmeanFit$MfDnPnE 
@@ -440,36 +552,114 @@ Mn.GmeanFit$MfDpPnE.rel = Mn.GmeanFit$MfDpPnE - Mn.GmeanFit$MfDnPnE
 Mn.GmeanFit$MfDyPyE.rel = Mn.GmeanFit$MfDyPyE - Mn.GmeanFit$MfDnPnE
 Mn.GmeanFit$MfDePyE.rel = Mn.GmeanFit$MfDePyE - Mn.GmeanFit$MfDnPnE
 
-with(Mn.GmeanFit,plot(Year,MfDpPnE.rel,type = "l", lwd= 2, col="black", ylab="Geom Mean Fitness", xlab="Year", xlim=c(1960,2010), ylim=c(-0.1,0.3))) #cx.lab changes the size of the axis labels
+with(Mn.GmeanFit,plot(Year,MfDpPnE.rel,type = "l", lwd= 2, col="black", ylab="", xlab="Year", xlim=c(1960,2010), ylim=c(-0.3,0.5))) #cx.lab changes the size of the axis labels
 with(Mn.GmeanFit,lines(Year,MfDyPnE.rel,lty=1, lwd= 2, col="green")) 
 with(Mn.GmeanFit,lines(Year,MfDnPyE.rel,lty=1, lwd= 2, col="orange")) 
 with(Mn.GmeanFit,lines(Year,MfDyPyE.rel,lty=1, lwd= 2, col="purple")) 
 with(Mn.GmeanFit,lines(Year,MfDePyE.rel,lty=1, lwd= 2, col="blue")) 
+abline(h=0, col="grey")
+
+#----------------------
+#RELATIVE TO CONSTANT PLASTICITY
+
+#RELATIVE FITNESS, SCENARIOS
+#Variable
+#3.0km variable
+C1.GmeanFit$CvDyPnE.rel= C1.GmeanFit$CvDyPnE - C1.GmeanFit$CvDnPnE 
+C1.GmeanFit$CvDnPyE.rel = C1.GmeanFit$CvDnPyE - C1.GmeanFit$CvDnPnE
+C1.GmeanFit$CvDpPnE.rel = C1.GmeanFit$CvDpPnE - C1.GmeanFit$CvDnPnE
+C1.GmeanFit$CvDyPyE.rel = C1.GmeanFit$CvDyPyE - C1.GmeanFit$CvDnPnE
+C1.GmeanFit$CvDePyE.rel = C1.GmeanFit$CvDePyE - C1.GmeanFit$CvDnPnE
+
+with(C1.GmeanFit,plot(Year,CvDpPnE.rel,type = "l", lwd= 2, col="black", ylab="", xlab="Year", xlim=c(1960,2010), ylim=c(-0.3,0.5))) #cx.lab changes the size of the axis labels
+with(C1.GmeanFit,lines(Year,CvDyPnE.rel,lty=1, lwd= 2, col="green")) 
+with(C1.GmeanFit,lines(Year,CvDnPyE.rel,lty=1, lwd= 2, col="orange")) 
+with(C1.GmeanFit,lines(Year,CvDyPyE.rel,lty=1, lwd= 2, col="purple")) 
+with(C1.GmeanFit,lines(Year,CvDePyE.rel,lty=1, lwd= 2, col="blue")) 
+abline(h=0, col="grey")
+
+legend(1975,1.8,cex=1.5,bty = "n",c("Perfect plasticity","Observed plasticity","Evolution of absorptivity","Evolution with observed plasticity","Constant absorptivity","Evolution of plasticity"),lty=c(1,1,1,1,1,1),col=c("black","green","orange","purple","red","blue") )
+
+#2.4km variable
+Gu.GmeanFit$GvDyPnE.rel= Gu.GmeanFit$GvDyPnE - Gu.GmeanFit$GvDnPnE 
+Gu.GmeanFit$GvDnPyE.rel = Gu.GmeanFit$GvDnPyE - Gu.GmeanFit$GvDnPnE
+Gu.GmeanFit$GvDpPnE.rel = Gu.GmeanFit$GvDpPnE - Gu.GmeanFit$GvDnPnE
+Gu.GmeanFit$GvDyPyE.rel = Gu.GmeanFit$GvDyPyE - Gu.GmeanFit$GvDnPnE
+Gu.GmeanFit$GvDePyE.rel = Gu.GmeanFit$GvDePyE - Gu.GmeanFit$GvDnPnE
+
+with(Gu.GmeanFit,plot(Year,GvDpPnE.rel,type = "l", lwd= 2, col="black", ylab="Relative Geometric Mean Fitness", xlab="Year", xlim=c(1960,2010), ylim=c(-0.3,0.5))) #cx.lab changes the size of the axis labels
+with(Gu.GmeanFit,lines(Year,GvDyPnE.rel,lty=1, lwd= 2, col="green")) 
+with(Gu.GmeanFit,lines(Year,GvDnPyE.rel,lty=1, lwd= 2, col="orange")) 
+with(Gu.GmeanFit,lines(Year,GvDyPyE.rel,lty=1, lwd= 2, col="purple")) 
+with(Gu.GmeanFit,lines(Year,GvDePyE.rel,lty=1, lwd= 2, col="blue")) 
+abline(h=0, col="grey")
+
+#1.8km variable
+Mn.GmeanFit$MvDyPnE.rel= Mn.GmeanFit$MvDyPnE - Mn.GmeanFit$MfDnPnE 
+Mn.GmeanFit$MvDnPyE.rel = Mn.GmeanFit$MvDnPyE - Mn.GmeanFit$MfDnPnE
+Mn.GmeanFit$MvDpPnE.rel = Mn.GmeanFit$MvDpPnE - Mn.GmeanFit$MfDnPnE
+Mn.GmeanFit$MvDyPyE.rel = Mn.GmeanFit$MvDyPyE - Mn.GmeanFit$MfDnPnE
+Mn.GmeanFit$MvDePyE.rel = Mn.GmeanFit$MvDePyE - Mn.GmeanFit$MfDnPnE
+
+with(Mn.GmeanFit,plot(Year,MvDpPnE.rel,type = "l", lwd= 2, col="black", ylab="", xlab="Year", xlim=c(1960,2010), ylim=c(-0.3,0.5))) #cx.lab changes the size of the axis labels
+with(Mn.GmeanFit,lines(Year,MvDyPnE.rel,lty=1, lwd= 2, col="green")) 
+with(Mn.GmeanFit,lines(Year,MvDnPyE.rel,lty=1, lwd= 2, col="orange")) 
+with(Mn.GmeanFit,lines(Year,MvDyPyE.rel,lty=1, lwd= 2, col="purple")) 
+with(Mn.GmeanFit,lines(Year,MvDePyE.rel,lty=1, lwd= 2, col="blue")) 
+abline(h=0, col="grey")
 
 #----------------------
 #RELATIVE FITNESS, PHENOLOGY SHIFTS
 
-#3.0km fixed
-C1.GmeanFit$CvDnPnE.rel = C1.GmeanFit$CvDnPnE - C1.GmeanFit$CfDnPnE 
-C1.GmeanFit$CvDyPnE.rel= C1.GmeanFit$CvDyPnE - C1.GmeanFit$CfDyPnE 
-C1.GmeanFit$CvDnPyE.rel = C1.GmeanFit$CvDnPyE - C1.GmeanFit$CfDnPyE
-C1.GmeanFit$CvDpPnE.rel = C1.GmeanFit$CvDpPnE - C1.GmeanFit$CfDpPnE
-C1.GmeanFit$CvDyPyE.rel = C1.GmeanFit$CvDyPyE - C1.GmeanFit$CfDyPyE
-C1.GmeanFit$CvDePyE.rel = C1.GmeanFit$CvDePyE - C1.GmeanFit$CfDePyE
+##3.0km fixed
+#C1.GmeanFit$CvDnPnE.rel = C1.GmeanFit$CvDnPnE - C1.GmeanFit$CfDnPnE 
+#C1.GmeanFit$CvDyPnE.rel= C1.GmeanFit$CvDyPnE - C1.GmeanFit$CfDyPnE 
+#C1.GmeanFit$CvDnPyE.rel = C1.GmeanFit$CvDnPyE - C1.GmeanFit$CfDnPyE
+#C1.GmeanFit$CvDpPnE.rel = C1.GmeanFit$CvDpPnE - C1.GmeanFit$CfDpPnE
+#C1.GmeanFit$CvDyPyE.rel = C1.GmeanFit$CvDyPyE - C1.GmeanFit$CfDyPyE
+#C1.GmeanFit$CvDePyE.rel = C1.GmeanFit$CvDePyE - C1.GmeanFit$CfDePyE
 
-with(C1.GmeanFit,plot(Year,CvDpPnE.rel,type = "l", lwd= 2, col="black", ylab="Geom Mean Fitness", xlab="Year", xlim=c(1960,2010), ylim=c(-0.2,0.4))) #cx.lab changes the size of the axis labels
-with(C1.GmeanFit,lines(Year,CvDyPnE.rel,lty=1, lwd= 2, col="green")) 
-with(C1.GmeanFit,lines(Year,CvDnPyE.rel,lty=1, lwd= 2, col="orange")) 
-with(C1.GmeanFit,lines(Year,CvDyPyE.rel,lty=1, lwd= 2, col="purple")) 
-with(C1.GmeanFit,lines(Year,CvDnPnE.rel,lty=1, lwd= 2, col="red")) 
-with(C1.GmeanFit,lines(Year,CvDePyE.rel,lty=1, lwd= 2, col="blue")) 
+#with(C1.GmeanFit,plot(Year,CvDpPnE.rel,type = "l", lwd= 2, col="black", ylab="Geom Mean Fitness", xlab="Year", xlim=c(1960,2010), ylim=c(-0.2,0.4))) #cx.lab changes the size of the axis labels
+#with(C1.GmeanFit,lines(Year,CvDyPnE.rel,lty=1, lwd= 2, col="green")) 
+#with(C1.GmeanFit,lines(Year,CvDnPyE.rel,lty=1, lwd= 2, col="orange")) 
+#with(C1.GmeanFit,lines(Year,CvDyPyE.rel,lty=1, lwd= 2, col="purple")) 
+#with(C1.GmeanFit,lines(Year,CvDnPnE.rel,lty=1, lwd= 2, col="red")) 
+#with(C1.GmeanFit,lines(Year,CvDePyE.rel,lty=1, lwd= 2, col="blue")) 
 
-#*********************
+##2.4km fixed
+#Gu.GmeanFit$GvDnPnE.rel = Gu.GmeanFit$GvDnPnE - Gu.GmeanFit$GfDnPnE 
+#Gu.GmeanFit$GvDyPnE.rel= Gu.GmeanFit$GvDyPnE - Gu.GmeanFit$GfDyPnE 
+#Gu.GmeanFit$GvDnPyE.rel = Gu.GmeanFit$GvDnPyE - Gu.GmeanFit$GfDnPyE
+#Gu.GmeanFit$GvDpPnE.rel = Gu.GmeanFit$GvDpPnE - Gu.GmeanFit$GfDpPnE
+#Gu.GmeanFit$GvDyPyE.rel = Gu.GmeanFit$GvDyPyE - Gu.GmeanFit$GfDyPyE
+#Gu.GmeanFit$GvDePyE.rel = Gu.GmeanFit$GvDePyE - Gu.GmeanFit$GfDePyE
+
+#with(Gu.GmeanFit,plot(Year,GvDpPnE.rel,type = "l", lwd= 2, col="black", ylab="Geom Mean Fitness", xlab="Year", xlim=c(1960,2010), ylim=c(-0.2,0.4))) #cx.lab changes the size of the axis labels
+#with(Gu.GmeanFit,lines(Year,GvDyPnE.rel,lty=1, lwd= 2, col="green")) 
+#with(Gu.GmeanFit,lines(Year,GvDnPyE.rel,lty=1, lwd= 2, col="orange")) 
+#with(Gu.GmeanFit,lines(Year,GvDyPyE.rel,lty=1, lwd= 2, col="purple")) 
+#with(Gu.GmeanFit,lines(Year,GvDnPnE.rel,lty=1, lwd= 2, col="red")) 
+#with(Gu.GmeanFit,lines(Year,GvDePyE.rel,lty=1, lwd= 2, col="blue")) 
+
+##1.8km fixed
+#Mn.GmeanFit$MvDnPnE.rel = Mn.GmeanFit$MvDnPnE - Mn.GmeanFit$MfDnPnE 
+#Mn.GmeanFit$MvDyPnE.rel= Mn.GmeanFit$MvDyPnE - Mn.GmeanFit$MfDyPnE 
+#Mn.GmeanFit$MvDnPyE.rel = Mn.GmeanFit$MvDnPyE - Mn.GmeanFit$MfDnPyE
+#Mn.GmeanFit$MvDpPnE.rel = Mn.GmeanFit$MvDpPnE - Mn.GmeanFit$MfDpPnE
+#Mn.GmeanFit$MvDyPyE.rel = Mn.GmeanFit$MvDyPyE - Mn.GmeanFit$MfDyPyE
+#Mn.GmeanFit$MvDePyE.rel = Mn.GmeanFit$MvDePyE - Mn.GmeanFit$MfDePyE
+ 
+#with(Mn.GmeanFit,plot(Year,MvDpPnE.rel,type = "l", lwd= 2, col="black", ylab="Geom Mean Fitness", xlab="Year", xlim=c(1960,2010), ylim=c(-0.2,0.4))) #cx.lab changes the size of the axis labels
+#with(Mn.GmeanFit,lines(Year,MvDyPnE.rel,lty=1, lwd= 2, col="green")) 
+##with(Mn.GmeanFit,lines(Year,MvDnPyE.rel,lty=1, lwd= 2, col="orange")) 
+#with(Mn.GmeanFit,lines(Year,MvDyPyE.rel,lty=1, lwd= 2, col="purple")) 
+#with(Mn.GmeanFit,lines(Year,MvDnPnE.rel,lty=1, lwd= 2, col="red")) 
+#with(Mn.GmeanFit,lines(Year,MvDePyE.rel,lty=1, lwd= 2, col="blue")) 
 
 #----------------------
 #add axis labels
 mtext("Year", side=1, line=1.2, outer=TRUE, cex=1.5)
-mtext("Geom Mean Fitness", side=2, line=0.2, outer=TRUE, cex=1.5)
-mtext(c("Varying Phenology","Fixed Phenology"),at=c(0.25,0.75), side=3, line=0, outer=TRUE, cex=1.5)
+#mtext("Geom Mean Fitness", side=2, line=0.2, outer=TRUE, cex=1.5)
+mtext(c("Fixed Phenology", "Varying Phenology"),at=c(0.35,0.85), side=3, line=0, outer=TRUE, cex=1.5)
 
 dev.off()
