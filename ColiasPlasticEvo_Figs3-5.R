@@ -595,11 +595,11 @@ with(Gu.GmeanFit,lines(Year,GvDePyE.rel,lty=1, lwd= 2, col="blue"))
 abline(h=0, col="grey")
 
 #1.8km variable
-Mn.GmeanFit$MvDyPnE.rel= Mn.GmeanFit$MvDyPnE - Mn.GmeanFit$MfDnPnE 
-Mn.GmeanFit$MvDnPyE.rel = Mn.GmeanFit$MvDnPyE - Mn.GmeanFit$MfDnPnE
-Mn.GmeanFit$MvDpPnE.rel = Mn.GmeanFit$MvDpPnE - Mn.GmeanFit$MfDnPnE
-Mn.GmeanFit$MvDyPyE.rel = Mn.GmeanFit$MvDyPyE - Mn.GmeanFit$MfDnPnE
-Mn.GmeanFit$MvDePyE.rel = Mn.GmeanFit$MvDePyE - Mn.GmeanFit$MfDnPnE
+Mn.GmeanFit$MvDyPnE.rel= Mn.GmeanFit$MvDyPnE - Mn.GmeanFit$MvDnPnE 
+Mn.GmeanFit$MvDnPyE.rel = Mn.GmeanFit$MvDnPyE - Mn.GmeanFit$MvDnPnE
+Mn.GmeanFit$MvDpPnE.rel = Mn.GmeanFit$MvDpPnE - Mn.GmeanFit$MvDnPnE
+Mn.GmeanFit$MvDyPyE.rel = Mn.GmeanFit$MvDyPyE - Mn.GmeanFit$MvDnPnE
+Mn.GmeanFit$MvDePyE.rel = Mn.GmeanFit$MvDePyE - Mn.GmeanFit$MvDnPnE
 
 with(Mn.GmeanFit,plot(Year,MvDpPnE.rel,type = "l", lwd= 2, col="black", ylab="", xlab="Year", xlim=c(1960,2010), ylim=c(-0.3,0.5))) #cx.lab changes the size of the axis labels
 with(Mn.GmeanFit,lines(Year,MvDyPnE.rel,lty=1, lwd= 2, col="green")) 
@@ -609,57 +609,87 @@ with(Mn.GmeanFit,lines(Year,MvDePyE.rel,lty=1, lwd= 2, col="blue"))
 abline(h=0, col="grey")
 
 #----------------------
-#RELATIVE FITNESS, PHENOLOGY SHIFTS
-
-##3.0km fixed
-#C1.GmeanFit$CvDnPnE.rel = C1.GmeanFit$CvDnPnE - C1.GmeanFit$CfDnPnE 
-#C1.GmeanFit$CvDyPnE.rel= C1.GmeanFit$CvDyPnE - C1.GmeanFit$CfDyPnE 
-#C1.GmeanFit$CvDnPyE.rel = C1.GmeanFit$CvDnPyE - C1.GmeanFit$CfDnPyE
-#C1.GmeanFit$CvDpPnE.rel = C1.GmeanFit$CvDpPnE - C1.GmeanFit$CfDpPnE
-#C1.GmeanFit$CvDyPyE.rel = C1.GmeanFit$CvDyPyE - C1.GmeanFit$CfDyPyE
-#C1.GmeanFit$CvDePyE.rel = C1.GmeanFit$CvDePyE - C1.GmeanFit$CfDePyE
-
-#with(C1.GmeanFit,plot(Year,CvDpPnE.rel,type = "l", lwd= 2, col="black", ylab="Geom Mean Fitness", xlab="Year", xlim=c(1960,2010), ylim=c(-0.2,0.4))) #cx.lab changes the size of the axis labels
-#with(C1.GmeanFit,lines(Year,CvDyPnE.rel,lty=1, lwd= 2, col="green")) 
-#with(C1.GmeanFit,lines(Year,CvDnPyE.rel,lty=1, lwd= 2, col="orange")) 
-#with(C1.GmeanFit,lines(Year,CvDyPyE.rel,lty=1, lwd= 2, col="purple")) 
-#with(C1.GmeanFit,lines(Year,CvDnPnE.rel,lty=1, lwd= 2, col="red")) 
-#with(C1.GmeanFit,lines(Year,CvDePyE.rel,lty=1, lwd= 2, col="blue")) 
-
-##2.4km fixed
-#Gu.GmeanFit$GvDnPnE.rel = Gu.GmeanFit$GvDnPnE - Gu.GmeanFit$GfDnPnE 
-#Gu.GmeanFit$GvDyPnE.rel= Gu.GmeanFit$GvDyPnE - Gu.GmeanFit$GfDyPnE 
-#Gu.GmeanFit$GvDnPyE.rel = Gu.GmeanFit$GvDnPyE - Gu.GmeanFit$GfDnPyE
-#Gu.GmeanFit$GvDpPnE.rel = Gu.GmeanFit$GvDpPnE - Gu.GmeanFit$GfDpPnE
-#Gu.GmeanFit$GvDyPyE.rel = Gu.GmeanFit$GvDyPyE - Gu.GmeanFit$GfDyPyE
-#Gu.GmeanFit$GvDePyE.rel = Gu.GmeanFit$GvDePyE - Gu.GmeanFit$GfDePyE
-
-#with(Gu.GmeanFit,plot(Year,GvDpPnE.rel,type = "l", lwd= 2, col="black", ylab="Geom Mean Fitness", xlab="Year", xlim=c(1960,2010), ylim=c(-0.2,0.4))) #cx.lab changes the size of the axis labels
-#with(Gu.GmeanFit,lines(Year,GvDyPnE.rel,lty=1, lwd= 2, col="green")) 
-#with(Gu.GmeanFit,lines(Year,GvDnPyE.rel,lty=1, lwd= 2, col="orange")) 
-#with(Gu.GmeanFit,lines(Year,GvDyPyE.rel,lty=1, lwd= 2, col="purple")) 
-#with(Gu.GmeanFit,lines(Year,GvDnPnE.rel,lty=1, lwd= 2, col="red")) 
-#with(Gu.GmeanFit,lines(Year,GvDePyE.rel,lty=1, lwd= 2, col="blue")) 
-
-##1.8km fixed
-#Mn.GmeanFit$MvDnPnE.rel = Mn.GmeanFit$MvDnPnE - Mn.GmeanFit$MfDnPnE 
-#Mn.GmeanFit$MvDyPnE.rel= Mn.GmeanFit$MvDyPnE - Mn.GmeanFit$MfDyPnE 
-#Mn.GmeanFit$MvDnPyE.rel = Mn.GmeanFit$MvDnPyE - Mn.GmeanFit$MfDnPyE
-#Mn.GmeanFit$MvDpPnE.rel = Mn.GmeanFit$MvDpPnE - Mn.GmeanFit$MfDpPnE
-#Mn.GmeanFit$MvDyPyE.rel = Mn.GmeanFit$MvDyPyE - Mn.GmeanFit$MfDyPyE
-#Mn.GmeanFit$MvDePyE.rel = Mn.GmeanFit$MvDePyE - Mn.GmeanFit$MfDePyE
- 
-#with(Mn.GmeanFit,plot(Year,MvDpPnE.rel,type = "l", lwd= 2, col="black", ylab="Geom Mean Fitness", xlab="Year", xlim=c(1960,2010), ylim=c(-0.2,0.4))) #cx.lab changes the size of the axis labels
-#with(Mn.GmeanFit,lines(Year,MvDyPnE.rel,lty=1, lwd= 2, col="green")) 
-##with(Mn.GmeanFit,lines(Year,MvDnPyE.rel,lty=1, lwd= 2, col="orange")) 
-#with(Mn.GmeanFit,lines(Year,MvDyPyE.rel,lty=1, lwd= 2, col="purple")) 
-#with(Mn.GmeanFit,lines(Year,MvDnPnE.rel,lty=1, lwd= 2, col="red")) 
-#with(Mn.GmeanFit,lines(Year,MvDePyE.rel,lty=1, lwd= 2, col="blue")) 
-
-#----------------------
 #add axis labels
 mtext("Year", side=1, line=1.2, outer=TRUE, cex=1.5)
 #mtext("Geom Mean Fitness", side=2, line=0.2, outer=TRUE, cex=1.5)
 mtext(c("Fixed Phenology", "Varying Phenology"),at=c(0.35,0.85), side=3, line=0, outer=TRUE, cex=1.5)
 
 dev.off()
+
+#=================================================================
+
+#RELATIVE FITNESS, PHENOLOGY SHIFTS
+
+##3.0km fixed
+C1.GmeanFit$CvDnPnE.rel = C1.GmeanFit$CvDnPnE - C1.GmeanFit$CfDnPnE 
+C1.GmeanFit$CvDyPnE.rel= C1.GmeanFit$CvDyPnE - C1.GmeanFit$CfDyPnE 
+C1.GmeanFit$CvDnPyE.rel = C1.GmeanFit$CvDnPyE - C1.GmeanFit$CfDnPyE
+C1.GmeanFit$CvDpPnE.rel = C1.GmeanFit$CvDpPnE - C1.GmeanFit$CfDpPnE
+C1.GmeanFit$CvDyPyE.rel = C1.GmeanFit$CvDyPyE - C1.GmeanFit$CfDyPyE
+C1.GmeanFit$CvDePyE.rel = C1.GmeanFit$CvDePyE - C1.GmeanFit$CfDePyE
+
+with(C1.GmeanFit,plot(Year,CvDpPnE.rel,type = "l", lwd= 2, col="black", ylab="Geom Mean Fitness", xlab="Year", xlim=c(1960,2010), ylim=c(-0.2,0.4))) #cx.lab changes the size of the axis labels
+with(C1.GmeanFit,lines(Year,CvDyPnE.rel,lty=1, lwd= 2, col="green")) 
+with(C1.GmeanFit,lines(Year,CvDnPyE.rel,lty=1, lwd= 2, col="orange")) 
+with(C1.GmeanFit,lines(Year,CvDyPyE.rel,lty=1, lwd= 2, col="purple")) 
+with(C1.GmeanFit,lines(Year,CvDnPnE.rel,lty=1, lwd= 2, col="red")) 
+with(C1.GmeanFit,lines(Year,CvDePyE.rel,lty=1, lwd= 2, col="blue")) 
+abline(h=0, col="grey")
+
+##Ave across years
+mean(C1.GmeanFit$CvDnPnE.rel)
+mean(C1.GmeanFit$CvDyPnE.rel)
+mean(C1.GmeanFit$CvDnPyE.rel)
+mean(C1.GmeanFit$CvDpPnE.rel)
+mean(C1.GmeanFit$CvDyPyE.rel)
+mean(C1.GmeanFit$CvDePyE.rel)
+#-------------------------------------
+
+##2.4km fixed
+Gu.GmeanFit$GvDnPnE.rel = Gu.GmeanFit$GvDnPnE - Gu.GmeanFit$GfDnPnE 
+Gu.GmeanFit$GvDyPnE.rel= Gu.GmeanFit$GvDyPnE - Gu.GmeanFit$GfDyPnE 
+Gu.GmeanFit$GvDnPyE.rel = Gu.GmeanFit$GvDnPyE - Gu.GmeanFit$GfDnPyE
+Gu.GmeanFit$GvDpPnE.rel = Gu.GmeanFit$GvDpPnE - Gu.GmeanFit$GfDpPnE
+Gu.GmeanFit$GvDyPyE.rel = Gu.GmeanFit$GvDyPyE - Gu.GmeanFit$GfDyPyE
+Gu.GmeanFit$GvDePyE.rel = Gu.GmeanFit$GvDePyE - Gu.GmeanFit$GfDePyE
+
+with(Gu.GmeanFit,plot(Year,GvDpPnE.rel,type = "l", lwd= 2, col="black", ylab="Geom Mean Fitness", xlab="Year", xlim=c(1960,2010), ylim=c(-0.2,0.4))) #cx.lab changes the size of the axis labels
+with(Gu.GmeanFit,lines(Year,GvDyPnE.rel,lty=1, lwd= 2, col="green")) 
+with(Gu.GmeanFit,lines(Year,GvDnPyE.rel,lty=1, lwd= 2, col="orange")) 
+with(Gu.GmeanFit,lines(Year,GvDyPyE.rel,lty=1, lwd= 2, col="purple")) 
+with(Gu.GmeanFit,lines(Year,GvDnPnE.rel,lty=1, lwd= 2, col="red")) 
+with(Gu.GmeanFit,lines(Year,GvDePyE.rel,lty=1, lwd= 2, col="blue")) 
+abline(h=0, col="grey")
+
+##Ave across years
+mean(Gu.GmeanFit$GvDnPnE.rel)
+mean(Gu.GmeanFit$GvDyPnE.rel)
+mean(Gu.GmeanFit$GvDnPyE.rel)
+mean(Gu.GmeanFit$GvDpPnE.rel)
+mean(Gu.GmeanFit$GvDyPyE.rel)
+mean(Gu.GmeanFit$GvDePyE.rel)
+#-------------------------------------
+
+##1.8km fixed
+Mn.GmeanFit$MvDnPnE.rel = Mn.GmeanFit$MvDnPnE - Mn.GmeanFit$MfDnPnE 
+Mn.GmeanFit$MvDyPnE.rel= Mn.GmeanFit$MvDyPnE - Mn.GmeanFit$MfDyPnE 
+Mn.GmeanFit$MvDnPyE.rel = Mn.GmeanFit$MvDnPyE - Mn.GmeanFit$MfDnPyE
+Mn.GmeanFit$MvDpPnE.rel = Mn.GmeanFit$MvDpPnE - Mn.GmeanFit$MfDpPnE
+Mn.GmeanFit$MvDyPyE.rel = Mn.GmeanFit$MvDyPyE - Mn.GmeanFit$MfDyPyE
+Mn.GmeanFit$MvDePyE.rel = Mn.GmeanFit$MvDePyE - Mn.GmeanFit$MfDePyE
+
+with(Mn.GmeanFit,plot(Year,MvDpPnE.rel,type = "l", lwd= 2, col="black", ylab="Geom Mean Fitness", xlab="Year", xlim=c(1960,2010), ylim=c(-0.2,0.4))) #cx.lab changes the size of the axis labels
+with(Mn.GmeanFit,lines(Year,MvDyPnE.rel,lty=1, lwd= 2, col="green")) 
+with(Mn.GmeanFit,lines(Year,MvDnPyE.rel,lty=1, lwd= 2, col="orange")) 
+with(Mn.GmeanFit,lines(Year,MvDyPyE.rel,lty=1, lwd= 2, col="purple")) 
+with(Mn.GmeanFit,lines(Year,MvDnPnE.rel,lty=1, lwd= 2, col="red")) 
+with(Mn.GmeanFit,lines(Year,MvDePyE.rel,lty=1, lwd= 2, col="blue")) 
+abline(h=0, col="grey")
+
+##Ave across years
+mean(Mn.GmeanFit$MvDnPnE.rel)
+mean(Mn.GmeanFit$MvDyPnE.rel)
+mean(Mn.GmeanFit$MvDnPyE.rel)
+mean(Mn.GmeanFit$MvDpPnE.rel)
+mean(Mn.GmeanFit$MvDyPyE.rel)
+mean(Mn.GmeanFit$MvDePyE.rel)
