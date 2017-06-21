@@ -1,5 +1,8 @@
 fdir= "C:\\Users\\Buckley\\Google Drive\\ColiasEvolution\\ColiasPlasticity\\"
 
+library(grid)
+library(gridBase)
+
 #############################################################################################
 
 ##part C:  Figures
@@ -173,16 +176,26 @@ Mn.g3.f <- subset(Evo.Mn,generation==3)
 ##The plots
 setwd(paste(fdir, "Figures\\", sep="") )
 
-pdf("Fig3_SelectionEvolution.pdf", height=10,width=10)
+pdf("Fig3_SelectionEvolution.pdf", height=10,width=15)
 
-par(mfrow=c(3,2))
-par(cex.lab=2,cex.axis=1.7, lwd=1.5)
-par(mar = c(1.4,4.5,1,0.5)) #This changes the margin of space around each plot, the default is 4. 1=bottom, 2=left, 3=top, 4=right
-par(oma=c(2,0,0,0), bty="o")
-#par(mfrow=c(1,2), lwd=2, mgp=c(1.5,0.5,0), mar=c(2.5,2.5,2,1), cex=1.2, cex.lab=0.8,cex.main=0.8, oma=c(0,0,0,0))
+#COMBINE BASE AND GGPLOT
+#Create figure window and layout
+plot.new()
+#grid.newpage()
+pushViewport(viewport(layout = grid.layout(3, 3)))
+
+# par(mfrow=c(3,3))
+# par(cex.lab=2,cex.axis=1.7, lwd=1.5)
+# par(mar = c(1.4,4.5,1,0.5)) #This changes the margin of space around each plot, the default is 4. 1=bottom, 2=left, 3=top, 4=right
+# par(oma=c(2,0,0,0), bty="o")
+# #par(mfrow=c(1,2), lwd=2, mgp=c(1.5,0.5,0), mar=c(2.5,2.5,2,1), cex=1.2, cex.lab=0.8,cex.main=0.8, oma=c(0,0,0,0))
+
+#Draw base plot
+pushViewport(viewport(layout.pos.col = 1, layout.pos.row = 1))
+par(fig = gridFIG(), new = TRUE, mar = c(3.9,4.5,1,0.5), cex.lab=1.5,cex.axis=1.7, lwd=1.5, bty="l")
 
 #C1
-with(C1.g1,plot(year,beta,type = "l", lwd= 2, col="blue", ylab="", xlab="Year", xlim=c(1960,2010), ylim=c(-1.8,3.5))) #cx.lab changes the size of the axis labels
+with(C1.g1,plot(year,beta,type = "l", lwd= 2, col="blue", ylab="", xlab="", xlim=c(1960,2010), ylim=c(-1.8,3.5))) #cx.lab changes the size of the axis labels
 abline(h=0,lty=2)#Horizontal line at 0 
 with(C1.g2,lines(year,beta,lty=1, lwd= 2, col="orange")) 
 text(1980,3.3,"3.0km", cex=2)
@@ -192,9 +205,15 @@ with(C1.g2.f,lines(year,beta,lty=1, lwd= 2, col="gold"))
 
 legend("topright", legend=c("gen 1", "gen 2", "gen 3"), lty=c("solid","solid","solid"), col=c("blue","orange","red"), cex=1.5, bty="n")
 
+popViewport()
 #----------------------------
 #ABS
-with(C1.g1,plot(year,meanAbs,type = "l", lwd= 2, col="blue",  xlab="Year",ylab = "",xlim=c(1960,2010), ylim=c(0.4,0.7), yaxt="n"))
+
+#Draw base plot
+pushViewport(viewport(layout.pos.col = 2, layout.pos.row = 1))
+par(fig = gridFIG(), new = TRUE)
+
+with(C1.g1,plot(year,meanAbs,type = "l", lwd= 2, col="blue",  xlab="",ylab = "",xlim=c(1960,2010), ylim=c(0.4,0.7), yaxt="n"))
 with(C1.g2, lines(year,meanAbs, lty=1, lwd=2,col="orange"))
 axis(2, seq(0.4,0.7,0.1), seq(0.4,0.7,0.1))
 #add fixed
@@ -215,6 +234,8 @@ mod1= summary(lm(C1.g2.f$meanAbs ~ C1.g2.f$year))
 mod.p= mod1$coefficients[2,4]
 if(mod.p<0.05)abline(mod1, col="gold")
 
+popViewport()
+
 #with(C1.g1,plot(year,meanAbs,type = "l", lwd= 2, col="blue",  xlab="Year",ylab = "",xlim=c(1960,2010), ylim=c(0.4,0.7), yaxt="n"))
 #with(C1.g2, lines(year,meanAbs, lty=1, lwd=2,col="orange"))
 #axis(2, seq(0.4,0.7,0.1), seq(0.4,0.7,0.1))
@@ -223,7 +244,12 @@ if(mod.p<0.05)abline(mod1, col="gold")
 #with(C1.g2,lines(year,meanLambda,lty=1, lwd= 2, col="orange")) 
 
 #CC site
-with(CC.g1,plot(year,beta,type = "l", lwd= 2, col="blue", ylab="Directional Selection", xlab="Year", xlim=c(1960,2010), ylim=c(-1.8,3.5))) #cx.lab changes the size of the axis labels
+
+#Draw base plot
+pushViewport(viewport(layout.pos.col = 1, layout.pos.row = 2))
+par(fig = gridFIG(), new = TRUE)
+
+with(CC.g1,plot(year,beta,type = "l", lwd= 2, col="blue", ylab="Directional Selection", xlab="", xlim=c(1960,2010), ylim=c(-1.8,3.5))) #cx.lab changes the size of the axis labels
 abline(h=0,lty=2)#Horizontal line at 0 
 with(CC.g2,lines(year,beta,lty=1, lwd= 2, col="orange")) 
 with(CC.g3,lines(year,beta,lty=1, lwd= 2, col="red")) 
@@ -233,8 +259,14 @@ with(CC.g1.f,lines(year,beta,lty=1, lwd= 2, col="lightblue"))
 with(CC.g2.f,lines(year,beta,lty=1, lwd= 2, col="gold")) 
 with(CC.g3.f,lines(year,beta,lty=1, lwd= 2, col="pink")) 
 
+popViewport()
+
 #ABS
-with(CC.g1,plot(year,meanAbs,type = "l", lwd= 2, col="blue",  xlab="Year",ylab = "Absorptivity",xlim=c(1960,2010), ylim=c(0.4,0.7), yaxt="n"))
+#Draw base plot
+pushViewport(viewport(layout.pos.col = 2, layout.pos.row = 2))
+par(fig = gridFIG(), new = TRUE)
+
+with(CC.g1,plot(year,meanAbs,type = "l", lwd= 2, col="blue",  xlab="",ylab = "Absorptivity",xlim=c(1960,2010), ylim=c(0.4,0.7), yaxt="n"))
 with(CC.g2, lines(year,meanAbs, lty=1, lwd=2,col="orange"))
 with(CC.g3, lines(year,meanAbs, lty=1, lwd=2,col="red"))
 axis(2, seq(0.4,0.7,0.1), seq(0.4,0.7,0.1))
@@ -257,6 +289,8 @@ mod1= summary(lm(CC.g2.f$meanAbs ~ CC.g2.f$year))
 mod.p= mod1$coefficients[2,4]
 if(mod.p<0.05)abline(mod1, col="gold")
 
+popViewport()
+
 #with(CC.g1,plot(year,meanAbs,type = "l", lwd= 2, col="blue",  xlab="Year",ylab = "Absorptivity",xlim=c(1960,2010), ylim=c(0.4,0.7), yaxt="n"))
 #with(CC.g2, lines(year,meanAbs, lty=1, lwd=2,col="orange"))
 #with(CC.g3, lines(year,meanAbs, lty=1, lwd=2,col="red"))
@@ -267,6 +301,10 @@ if(mod.p<0.05)abline(mod1, col="gold")
 #with(CC.g3,lines(year,meanLambda,lty=1, lwd= 2, col="red")) 
 
 ##Montrose site
+#Draw base plot
+pushViewport(viewport(layout.pos.col = 1, layout.pos.row = 3))
+par(fig = gridFIG(), new = TRUE)
+
 with(Mn.g1,plot(year,beta,type = "l", lwd= 2, col="blue", ylab="", xlab="Year", xlim=c(1960,2010), ylim=c(-1.8,3.5))) #cx.lab changes the size of the axis labels
 abline(h=0,lty=2)#Horizontal line at 0 
 with(Mn.g2,lines(year,beta,lty=1, lwd= 2, col="orange")) 
@@ -277,7 +315,12 @@ with(Mn.g1.f,lines(year,beta,lty=1, lwd= 2, col="lightblue"))
 with(Mn.g2.f,lines(year,beta,lty=1, lwd= 2, col="gold")) 
 with(Mn.g3.f,lines(year,beta,lty=1, lwd= 2, col="pink"))
 
+popViewport()
+
 #ABS
+pushViewport(viewport(layout.pos.col = 2, layout.pos.row = 3))
+par(fig = gridFIG(), new = TRUE)
+
 with(Mn.g1,plot(year,meanAbs,type = "l", lwd= 2, col="blue",  xlab="Year",ylab = "",xlim=c(1960,2010), ylim=c(0.4,0.7), yaxt="n"))
 with(Mn.g2, lines(year,meanAbs, lty=1, lwd=2,col="orange"))
 with(Mn.g3, lines(year,meanAbs, lty=1, lwd=2,col="red"))
@@ -301,6 +344,8 @@ mod1= summary(lm(Mn.g2.f$meanAbs ~ Mn.g2.f$year))
 mod.p= mod1$coefficients[2,4]
 if(mod.p<0.05)abline(mod1, col="gold")
 
+popViewport()
+
 #with(Mn.g1,plot(year,meanAbs,type = "l", lwd= 2, col="blue",  xlab="Year",ylab = "",xlim=c(1960,2010), ylim=c(0.4,0.7), yaxt="n"))
 #with(Mn.g2, lines(year,meanAbs, lty=1, lwd=2,col="orange"))
 #with(Mn.g3, lines(year,meanAbs, lty=1, lwd=2,col="red"))
@@ -310,10 +355,26 @@ if(mod.p<0.05)abline(mod1, col="gold")
 #with(Mn.g2,lines(year,meanLambda,lty=1, lwd= 2, col="orange")) 
 #with(Mn.g3,lines(year,meanLambda,lty=1, lwd= 2, col="red")) 
 
-#add y-axis labels
-mtext("Year", side=1, line=1, outer=TRUE, cex=1.5)
+### ADD OPTIMAL REACTION NORMS FROM BELOW
+
+#Draw ggplots
+pushViewport(viewport(layout.pos.col = 3, layout.pos.row = 1))
+print(H1, newpage = FALSE)
+popViewport()
+
+pushViewport(viewport(layout.pos.col = 3, layout.pos.row = 2))
+print(H2, newpage = FALSE)
+popViewport()
+
+pushViewport(viewport(layout.pos.col = 3, layout.pos.row = 3))
+print(H3, newpage = FALSE)
+popViewport()
+
+##add y-axis labels
+#mtext("Year", side=1, line=1, outer=TRUE, cex=1.5)
 
 dev.off()
+
 #####################################################################################################################################
 ### FIGURE 4
 #plots of evolving RNs
@@ -374,19 +435,26 @@ G2<- k+geom_line(aes(group=year),size=1)+theme_bw()+xlim(10,30)+ylim(0.4,0.7)+sc
 h<- ggplot(Mn, aes(x=Tpup, y=meanAbs, color=year))
 G3<- h+geom_line(aes(group=year),size=1)+theme_bw()+xlim(10,30)+ylim(0.4,0.7)+scale_color_gradientn(colours=rainbow(10))+ theme(legend.position = "none", plot.background = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank())+theme(axis.line = element_line(color = 'black'),axis.text.x=element_text(size=17),axis.text.y=element_text(size=17),axis.title.x=element_text(size=24, vjust=0.1),axis.title.y=element_text(size=24, angle=90,vjust=0.25),legend.title=element_text(size=17), legend.text=element_text(size=15))+xlab(NULL)+ylab(NULL)+
   theme(plot.margin = unit(c(2,2,2,2), "mm"))
+#------------------
 
 #Perfect RNs
 m<- ggplot(C1P, aes(x=Tpup, y=absopt, color=year))
-H1<- m+geom_line(aes(group=year),size=1)+theme_bw()+xlim(10,30)+ylim(0.4,0.7)+scale_color_gradientn(colours=rainbow(10))+ theme(legend.position = "none", plot.background = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank())+theme(axis.line = element_line(color = 'black'),axis.text.x=element_text(size=17),axis.text.y=element_text(size=17),axis.title.x=element_text(size=24, vjust=0.1),axis.title.y=element_text(size=24, angle=90,vjust=0.25),legend.title=element_text(size=17), legend.text=element_text(size=15))+xlab(NULL)+ylab(NULL)+annotate("text", x=26.0,y=0.68, label= "3.0km", size=5)+
-  theme(plot.margin = unit(c(2,2,2,2), "mm"))
+H1<- m+geom_line(aes(group=year),size=1)+theme_bw()+xlim(10,30)+ylim(0.4,0.7)+scale_color_gradientn(colours=rainbow(10))+ theme(plot.background = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank())+theme(axis.line = element_line(color = 'black'),axis.text.x=element_text(size=17),axis.text.y=element_text(size=17),axis.title.x=element_text(size=20, vjust=0.1),axis.title.y=element_text(size=20, angle=90,vjust=0.25),legend.title=element_text(size=17), legend.text=element_text(size=15))+xlab("")+ylab("")+
+  theme(plot.margin = unit(c(2,2,2,2), "mm"))+
+  theme(legend.position=c(0.8,0.7))  +geom_segment(aes(x = as.numeric(15), y = as.numeric(0.7), xend = as.numeric(25), yend = as.numeric(0.4)), color="black", lwd=2) 
+#+geom_segment(aes(x = as.numeric(15), y = as.numeric(0.7), xend = as.numeric(25), yend = as.numeric(0.4), colour = "black", show.legend=FALSE))
 
 k<- ggplot(CCP, aes(x=Tpup, y=absopt, color=year))
-H2<- k+geom_line(aes(group=year),size=1)+theme_bw()+xlim(10,30)+ylim(0.4,0.7)+scale_color_gradientn(colours=rainbow(10))+ theme(legend.position = "none", plot.background = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank())+theme(axis.line = element_line(color = 'black'),axis.text.x=element_text(size=17),axis.text.y=element_text(size=17),axis.title.x=element_text(size=24, vjust=0.1),axis.title.y=element_text(size=24, angle=90,vjust=0.25),legend.title=element_text(size=17), legend.text=element_text(size=15))+xlab(NULL)+ylab(NULL)+annotate("text", x=26.0,y=0.68, label= "2.4km", size=5)+
-  theme(plot.margin = unit(c(2,2,2,2), "mm"))
+H2<- k+geom_line(aes(group=year),size=1)+theme_bw()+xlim(10,30)+ylim(0.4,0.7)+scale_color_gradientn(colours=rainbow(10))+ theme(plot.background = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank())+theme(axis.line = element_line(color = 'black'),axis.text.x=element_text(size=17),axis.text.y=element_text(size=17),axis.title.x=element_text(size=20, vjust=0.1),axis.title.y=element_text(size=20, angle=90,vjust=0.25),legend.title=element_text(size=17), legend.text=element_text(size=15))+xlab("")+ylab("Absorptivity")+
+  theme(plot.margin = unit(c(2,2,2,2), "mm"))+
+  theme(legend.position="none") +geom_segment(aes(x = as.numeric(15), y = as.numeric(0.7), xend = as.numeric(25), yend = as.numeric(0.4)), color="black", lwd=2) 
 
 h<- ggplot(MnP, aes(x=Tpup, y=absopt, color=year))
-H3<- h+geom_line(aes(group=year),size=1)+theme_bw()+xlim(10,30)+ylim(0.4,0.7)+scale_color_gradientn(colours=rainbow(10))+ theme(legend.position = "none", plot.background = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank())+theme(axis.line = element_line(color = 'black'),axis.text.x=element_text(size=17),axis.text.y=element_text(size=17),axis.title.x=element_text(size=24, vjust=0.1),axis.title.y=element_text(size=24, angle=90,vjust=0.25),legend.title=element_text(size=17), legend.text=element_text(size=15))+xlab(NULL)+ylab(NULL)+annotate("text", x=26.0,y=0.68, label= "1.8km", size=5)+
-  theme(plot.margin = unit(c(2,2,2,2), "mm"))
+H3<- h+geom_line(aes(group=year),size=1)+theme_bw()+xlim(10,30)+ylim(0.4,0.7)+scale_color_gradientn(colours=rainbow(10))+ theme(plot.background = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank())+theme(axis.line = element_line(color = 'black'),axis.text.x=element_text(size=17),axis.text.y=element_text(size=17),axis.title.x=element_text(size=20, vjust=0.1),axis.title.y=element_text(size=20, angle=90,vjust=0.25),legend.title=element_text(size=17), legend.text=element_text(size=15))+xlab("Pupal temperature (°C)")+ylab("")+
+  theme(plot.margin = unit(c(2,2,2,2), "mm"))+
+  theme(legend.position="none") +geom_segment(aes(x = as.numeric(15), y = as.numeric(0.7), xend = as.numeric(25), yend = as.numeric(0.4)), color="black", lwd=2) 
+# +annotate("text", x=26.0,y=0.68, label= "1.8km", size=5)
+#+theme(legend.key.width = unit(2, "cm"))
 
 #+xlab("Pupal Temperature")+ylab("Absorptivity")
 
@@ -408,6 +476,7 @@ legend<-g_legend(G1n)
 
 #----------------------------
 setwd(paste(fdir, "Figures\\", sep="") )
+library(gridExtra)
 
 pdf("Fig4_ReactionNorm.pdf", height=10,width=10)
 
@@ -693,3 +762,40 @@ mean(Mn.GmeanFit$MvDnPyE.rel)
 mean(Mn.GmeanFit$MvDpPnE.rel)
 mean(Mn.GmeanFit$MvDyPyE.rel)
 mean(Mn.GmeanFit$MvDePyE.rel)
+
+#==========================================================
+#ASSESS VARIANCE
+
+#Figure 3
+
+c(var(C1.g1$beta),var(C1.g2$beta))
+c(var(C1.g1.f$beta),var(C1.g2.f$beta))
+
+c(var(C1.g1$meanAbs),var(C1.g2$meanAbs))
+c(var(C1.g1.f$meanAbs),var(C1.g2.f$meanAbs))
+
+#------------------------
+c(var(CC.g1$beta),var(CC.g2$beta),var(CC.g3$beta))
+c(var(CC.g1.f$beta),var(CC.g2.f$beta),var(CC.g3.f$beta))
+
+c(var(CC.g1$meanAbs),var(CC.g2$meanAbs),var(CC.g3$meanAbs))
+c(var(CC.g1.f$meanAbs),var(CC.g2.f$meanAbs),var(CC.g3.f$meanAbs))
+
+#------------------------
+c(var(Mn.g1$beta),var(Mn.g2$beta),var(Mn.g3$beta))
+c(var(Mn.g1.f$beta),var(Mn.g2.f$beta),var(Mn.g3.f$beta))
+
+c(var(Mn.g1$meanAbs),var(Mn.g2$meanAbs),var(Mn.g3$meanAbs))
+c(var(Mn.g1.f$meanAbs),var(Mn.g2.f$meanAbs),var(Mn.g3.f$meanAbs))
+
+#-----------------
+#Benefit of plasticity
+#Figure 4
+
+mean(C1.GmeanFit$CvDpPnE.rel)
+mean(Gu.GmeanFit$GvDpPnE.rel)
+mean(Mn.GmeanFit$MvDpPnE.rel)
+
+
+
+
