@@ -436,23 +436,31 @@ h<- ggplot(Mn, aes(x=Tpup, y=meanAbs, color=year))
 G3<- h+geom_line(aes(group=year),size=1)+theme_bw()+xlim(10,30)+ylim(0.4,0.7)+scale_color_gradientn(colours=rainbow(10))+ theme(legend.position = "none", plot.background = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank())+theme(axis.line = element_line(color = 'black'),axis.text.x=element_text(size=17),axis.text.y=element_text(size=17),axis.title.x=element_text(size=24, vjust=0.1),axis.title.y=element_text(size=24, angle=90,vjust=0.25),legend.title=element_text(size=17), legend.text=element_text(size=15))+xlab(NULL)+ylab(NULL)+
   theme(plot.margin = unit(c(2,2,2,2), "mm"))
 #------------------
+#Estimate reaction norms
+
+elevs= c(1.777,2.438,3.021)
+a20= 0.4226+0.06517*elevs
+slope= -0.083
+a15= a20 -0.0083*(15-20)
+a25= a20 -0.0083*(25-20)
 
 #Perfect RNs
 m<- ggplot(C1P, aes(x=Tpup, y=absopt, color=year))
 H1<- m+geom_line(aes(group=year),size=1)+theme_bw()+xlim(10,30)+ylim(0.4,0.7)+scale_color_gradientn(colours=rainbow(10))+ theme(plot.background = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank())+theme(axis.line = element_line(color = 'black'),axis.text.x=element_text(size=17),axis.text.y=element_text(size=17),axis.title.x=element_text(size=20, vjust=0.1),axis.title.y=element_text(size=20, angle=90,vjust=0.25),legend.title=element_text(size=17), legend.text=element_text(size=15))+xlab("")+ylab("")+
   theme(plot.margin = unit(c(2,2,2,2), "mm"))+
-  theme(legend.position=c(0.8,0.7))  +geom_segment(aes(x = as.numeric(15), y = as.numeric(0.7), xend = as.numeric(25), yend = as.numeric(0.4)), color="black", lwd=2) 
+  theme(legend.position=c(0.8,0.7))  +geom_segment(aes(x = as.numeric(15), y = a15[3], xend = as.numeric(25), yend = a25[3] ), color="black", lwd=2) 
 #+geom_segment(aes(x = as.numeric(15), y = as.numeric(0.7), xend = as.numeric(25), yend = as.numeric(0.4), colour = "black", show.legend=FALSE))
 
 k<- ggplot(CCP, aes(x=Tpup, y=absopt, color=year))
 H2<- k+geom_line(aes(group=year),size=1)+theme_bw()+xlim(10,30)+ylim(0.4,0.7)+scale_color_gradientn(colours=rainbow(10))+ theme(plot.background = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank())+theme(axis.line = element_line(color = 'black'),axis.text.x=element_text(size=17),axis.text.y=element_text(size=17),axis.title.x=element_text(size=20, vjust=0.1),axis.title.y=element_text(size=20, angle=90,vjust=0.25),legend.title=element_text(size=17), legend.text=element_text(size=15))+xlab("")+ylab("Absorptivity")+
   theme(plot.margin = unit(c(2,2,2,2), "mm"))+
-  theme(legend.position="none") +geom_segment(aes(x = as.numeric(15), y = as.numeric(0.7), xend = as.numeric(25), yend = as.numeric(0.4)), color="black", lwd=2) 
+  theme(legend.position="none") +geom_segment(aes(x = as.numeric(15), y = a15[2], xend = as.numeric(25), yend = a25[2]), color="black", lwd=2) 
+          
 
 h<- ggplot(MnP, aes(x=Tpup, y=absopt, color=year))
 H3<- h+geom_line(aes(group=year),size=1)+theme_bw()+xlim(10,30)+ylim(0.4,0.7)+scale_color_gradientn(colours=rainbow(10))+ theme(plot.background = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank())+theme(axis.line = element_line(color = 'black'),axis.text.x=element_text(size=17),axis.text.y=element_text(size=17),axis.title.x=element_text(size=20, vjust=0.1),axis.title.y=element_text(size=20, angle=90,vjust=0.25),legend.title=element_text(size=17), legend.text=element_text(size=15))+xlab("Pupal temperature (°C)")+ylab("")+
   theme(plot.margin = unit(c(2,2,2,2), "mm"))+
-  theme(legend.position="none") +geom_segment(aes(x = as.numeric(15), y = as.numeric(0.7), xend = as.numeric(25), yend = as.numeric(0.4)), color="black", lwd=2) 
+  theme(legend.position="none") +geom_segment(aes(x = as.numeric(15), y = a15[1], xend = as.numeric(25), yend = a25[1]), color="black", lwd=2) 
 # +annotate("text", x=26.0,y=0.68, label= "1.8km", size=5)
 #+theme(legend.key.width = unit(2, "cm"))
 
