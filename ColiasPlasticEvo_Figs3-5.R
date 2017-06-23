@@ -178,21 +178,21 @@ setwd(paste(fdir, "Figures\\", sep="") )
 
 pdf("Fig3_SelectionEvolution.pdf", height=10,width=15)
 
-#COMBINE BASE AND GGPLOT
-#Create figure window and layout
-plot.new()
-#grid.newpage()
-pushViewport(viewport(layout = grid.layout(3, 3)))
+# #COMBINE BASE AND GGPLOT
+# #Create figure window and layout
+# plot.new()
+# #grid.newpage()
+# pushViewport(viewport(layout = grid.layout(3, 3)))
 
-# par(mfrow=c(3,3))
-# par(cex.lab=2,cex.axis=1.7, lwd=1.5)
-# par(mar = c(1.4,4.5,1,0.5)) #This changes the margin of space around each plot, the default is 4. 1=bottom, 2=left, 3=top, 4=right
-# par(oma=c(2,0,0,0), bty="o")
+par(mfrow=c(3,3))
+par(cex.lab=2,cex.axis=1.7, lwd=1.5)
+par(mar = c(1.4,4.5,1,0.5)) #This changes the margin of space around each plot, the default is 4. 1=bottom, 2=left, 3=top, 4=right
+par(oma=c(2,0,0,0), bty="o")
 # #par(mfrow=c(1,2), lwd=2, mgp=c(1.5,0.5,0), mar=c(2.5,2.5,2,1), cex=1.2, cex.lab=0.8,cex.main=0.8, oma=c(0,0,0,0))
 
-#Draw base plot
-pushViewport(viewport(layout.pos.col = 1, layout.pos.row = 1))
-par(fig = gridFIG(), new = TRUE, mar = c(3.9,4.5,1,0.5), cex.lab=1.5,cex.axis=1.7, lwd=1.5, bty="l")
+# #Draw base plot
+# pushViewport(viewport(layout.pos.col = 1, layout.pos.row = 1))
+# par(fig = gridFIG(), new = TRUE, mar = c(3.9,4.5,1,0.5), cex.lab=1.5,cex.axis=1.7, lwd=1.5, bty="l")
 
 #C1
 with(C1.g1,plot(year,beta,type = "l", lwd= 2, col="blue", ylab="", xlab="", xlim=c(1960,2010), ylim=c(-1.8,3.5))) #cx.lab changes the size of the axis labels
@@ -205,13 +205,28 @@ with(C1.g2.f,lines(year,beta,lty=1, lwd= 2, col="gold"))
 
 legend("topright", legend=c("gen 1", "gen 2", "gen 3"), lty=c("solid","solid","solid"), col=c("blue","orange","red"), cex=1.5, bty="n")
 
-popViewport()
+# popViewport()
+
+#plot significant regressions
+mod1= summary(lm(C1.g1$beta ~ C1.g1$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="blue")
+mod1= summary(lm(C1.g2$beta ~ C1.g2$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="orange")
+mod1= summary(lm(C1.g1.f$beta ~ C1.g1.f$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="lightblue")
+mod1= summary(lm(C1.g2.f$beta ~ C1.g2.f$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="gold")
+
 #----------------------------
 #ABS
 
-#Draw base plot
-pushViewport(viewport(layout.pos.col = 2, layout.pos.row = 1))
-par(fig = gridFIG(), new = TRUE)
+# #Draw base plot
+# pushViewport(viewport(layout.pos.col = 2, layout.pos.row = 1))
+# par(fig = gridFIG(), new = TRUE)
 
 with(C1.g1,plot(year,meanAbs,type = "l", lwd= 2, col="blue",  xlab="",ylab = "",xlim=c(1960,2010), ylim=c(0.4,0.7), yaxt="n"))
 with(C1.g2, lines(year,meanAbs, lty=1, lwd=2,col="orange"))
@@ -234,7 +249,35 @@ mod1= summary(lm(C1.g2.f$meanAbs ~ C1.g2.f$year))
 mod.p= mod1$coefficients[2,4]
 if(mod.p<0.05)abline(mod1, col="gold")
 
-popViewport()
+# popViewport()
+
+#----------------------------
+#FITNESS
+
+# #Draw base plot
+# pushViewport(viewport(layout.pos.col = 2, layout.pos.row = 1))
+# par(fig = gridFIG(), new = TRUE)
+
+with(C1.g1,plot(year,meanLambda,type = "l", lwd= 2, col="blue",  xlab="",ylab = "",xlim=c(1960,2010), ylim=c(1,2.4), yaxt="n"))
+with(C1.g2, lines(year,meanLambda, lty=1, lwd=2,col="orange"))
+axis(2, seq(1,2.4,0.4), seq(1,2.4,0.4))
+#add fixed
+with(C1.g1.f,lines(year,meanLambda,lty=1, lwd= 2, col="lightblue"))
+with(C1.g2.f,lines(year,meanLambda,lty=1, lwd= 2, col="gold")) 
+
+#plot significant regressions
+mod1= summary(lm(C1.g1$meanLambda ~ C1.g1$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="blue")
+mod1= summary(lm(C1.g2$meanLambda ~ C1.g2$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="orange")
+mod1= summary(lm(C1.g1.f$meanLambda ~ C1.g1.f$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="lightblue")
+mod1= summary(lm(C1.g2.f$meanLambda ~ C1.g2.f$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="gold")
 
 #with(C1.g1,plot(year,meanAbs,type = "l", lwd= 2, col="blue",  xlab="Year",ylab = "",xlim=c(1960,2010), ylim=c(0.4,0.7), yaxt="n"))
 #with(C1.g2, lines(year,meanAbs, lty=1, lwd=2,col="orange"))
@@ -243,11 +286,12 @@ popViewport()
 #with(C1.g1,plot(year,meanLambda,type = "l", lwd= 2, col="blue",  xlab="Year",ylab = "",xlim=c(1960,2010), ylim=c(1,2.4)))
 #with(C1.g2,lines(year,meanLambda,lty=1, lwd= 2, col="orange")) 
 
+#==========================
 #CC site
 
-#Draw base plot
-pushViewport(viewport(layout.pos.col = 1, layout.pos.row = 2))
-par(fig = gridFIG(), new = TRUE)
+# #Draw base plot
+# pushViewport(viewport(layout.pos.col = 1, layout.pos.row = 2))
+# par(fig = gridFIG(), new = TRUE)
 
 with(CC.g1,plot(year,beta,type = "l", lwd= 2, col="blue", ylab="Directional Selection", xlab="", xlim=c(1960,2010), ylim=c(-1.8,3.5))) #cx.lab changes the size of the axis labels
 abline(h=0,lty=2)#Horizontal line at 0 
@@ -259,12 +303,32 @@ with(CC.g1.f,lines(year,beta,lty=1, lwd= 2, col="lightblue"))
 with(CC.g2.f,lines(year,beta,lty=1, lwd= 2, col="gold")) 
 with(CC.g3.f,lines(year,beta,lty=1, lwd= 2, col="pink")) 
 
-popViewport()
+# popViewport()
+
+#plot significant regressions
+mod1= summary(lm(CC.g1$beta ~ CC.g1$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="blue")
+mod1= summary(lm(CC.g2$beta ~ CC.g2$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="orange")
+mod1= summary(lm(CC.g3$beta ~ CC.g3$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="red")
+mod1= summary(lm(CC.g1.f$beta ~ CC.g1.f$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="lightblue")
+mod1= summary(lm(CC.g2.f$beta ~ CC.g2.f$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="gold")
+mod1= summary(lm(CC.g3.f$beta ~ CC.g3.f$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="pink")
 
 #ABS
-#Draw base plot
-pushViewport(viewport(layout.pos.col = 2, layout.pos.row = 2))
-par(fig = gridFIG(), new = TRUE)
+# #Draw base plot
+# pushViewport(viewport(layout.pos.col = 2, layout.pos.row = 2))
+# par(fig = gridFIG(), new = TRUE)
 
 with(CC.g1,plot(year,meanAbs,type = "l", lwd= 2, col="blue",  xlab="",ylab = "Absorptivity",xlim=c(1960,2010), ylim=c(0.4,0.7), yaxt="n"))
 with(CC.g2, lines(year,meanAbs, lty=1, lwd=2,col="orange"))
@@ -282,14 +346,56 @@ if(mod.p<0.05)abline(mod1, col="blue")
 mod1= summary(lm(CC.g2$meanAbs ~ CC.g2$year))
 mod.p= mod1$coefficients[2,4]
 if(mod.p<0.05)abline(mod1, col="orange")
+mod1= summary(lm(CC.g3$meanAbs ~ CC.g3$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="red")
 mod1= summary(lm(CC.g1.f$meanAbs ~ CC.g1.f$year))
 mod.p= mod1$coefficients[2,4]
 if(mod.p<0.05)abline(mod1, col="lightblue")
 mod1= summary(lm(CC.g2.f$meanAbs ~ CC.g2.f$year))
 mod.p= mod1$coefficients[2,4]
 if(mod.p<0.05)abline(mod1, col="gold")
+mod1= summary(lm(CC.g3.f$meanAbs ~ CC.g3.f$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="pink")
 
-popViewport()
+#----------------------------
+#FITNESS
+
+# #Draw base plot
+# pushViewport(viewport(layout.pos.col = 2, layout.pos.row = 1))
+# par(fig = gridFIG(), new = TRUE)
+
+with(CC.g1,plot(year,meanLambda,type = "l", lwd= 2, col="blue",  xlab="",ylab = "Mean Fitness",xlim=c(1960,2010), ylim=c(1,2.4), yaxt="n"))
+with(CC.g2, lines(year,meanLambda, lty=1, lwd=2,col="orange"))
+with(CC.g3,lines(year,meanLambda,lty=1, lwd= 2, col="red")) 
+axis(2, seq(1,2.4,0.4), seq(1,2.4,0.4))
+#add fixed
+with(CC.g1.f,lines(year,meanLambda,lty=1, lwd= 2, col="lightblue"))
+with(CC.g2.f,lines(year,meanLambda,lty=1, lwd= 2, col="gold")) 
+with(CC.g3.f,lines(year,meanLambda,lty=1, lwd= 2, col="pink"))
+
+#plot significant regressions
+mod1= summary(lm(CC.g1$meanLambda ~ CC.g1$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="blue")
+mod1= summary(lm(CC.g2$meanLambda ~ CC.g2$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="orange")
+mod1= summary(lm(CC.g3$meanLambda ~ CC.g3$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="red")
+mod1= summary(lm(CC.g1.f$meanLambda ~ CC.g1.f$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="lightblue")
+mod1= summary(lm(CC.g2.f$meanLambda ~ CC.g2.f$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="gold")
+mod1= summary(lm(CC.g3.f$meanLambda ~ CC.g3.f$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="pink")
+
+# popViewport()
 
 #with(CC.g1,plot(year,meanAbs,type = "l", lwd= 2, col="blue",  xlab="Year",ylab = "Absorptivity",xlim=c(1960,2010), ylim=c(0.4,0.7), yaxt="n"))
 #with(CC.g2, lines(year,meanAbs, lty=1, lwd=2,col="orange"))
@@ -300,10 +406,11 @@ popViewport()
 #with(CC.g2,lines(year,meanLambda,lty=1, lwd= 2, col="orange")) 
 #with(CC.g3,lines(year,meanLambda,lty=1, lwd= 2, col="red")) 
 
+#==========================
 ##Montrose site
-#Draw base plot
-pushViewport(viewport(layout.pos.col = 1, layout.pos.row = 3))
-par(fig = gridFIG(), new = TRUE)
+# #Draw base plot
+# pushViewport(viewport(layout.pos.col = 1, layout.pos.row = 3))
+# par(fig = gridFIG(), new = TRUE)
 
 with(Mn.g1,plot(year,beta,type = "l", lwd= 2, col="blue", ylab="", xlab="Year", xlim=c(1960,2010), ylim=c(-1.8,3.5))) #cx.lab changes the size of the axis labels
 abline(h=0,lty=2)#Horizontal line at 0 
@@ -315,11 +422,31 @@ with(Mn.g1.f,lines(year,beta,lty=1, lwd= 2, col="lightblue"))
 with(Mn.g2.f,lines(year,beta,lty=1, lwd= 2, col="gold")) 
 with(Mn.g3.f,lines(year,beta,lty=1, lwd= 2, col="pink"))
 
-popViewport()
+# popViewport()
+
+#plot significant regressions
+mod1= summary(lm(Mn.g1$beta ~ Mn.g1$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="blue")
+mod1= summary(lm(Mn.g2$beta ~ Mn.g2$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="orange")
+mod1= summary(lm(Mn.g3$beta ~ Mn.g3$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="red")
+mod1= summary(lm(Mn.g1.f$beta ~ Mn.g1.f$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="lightblue")
+mod1= summary(lm(Mn.g2.f$beta ~ Mn.g2.f$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="gold")
+mod1= summary(lm(Mn.g3.f$beta ~ Mn.g3.f$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="pink")
 
 #ABS
-pushViewport(viewport(layout.pos.col = 2, layout.pos.row = 3))
-par(fig = gridFIG(), new = TRUE)
+# pushViewport(viewport(layout.pos.col = 2, layout.pos.row = 3))
+# par(fig = gridFIG(), new = TRUE)
 
 with(Mn.g1,plot(year,meanAbs,type = "l", lwd= 2, col="blue",  xlab="Year",ylab = "",xlim=c(1960,2010), ylim=c(0.4,0.7), yaxt="n"))
 with(Mn.g2, lines(year,meanAbs, lty=1, lwd=2,col="orange"))
@@ -337,14 +464,56 @@ if(mod.p<0.05)abline(mod1, col="blue")
 mod1= summary(lm(Mn.g2$meanAbs ~ Mn.g2$year))
 mod.p= mod1$coefficients[2,4]
 if(mod.p<0.05)abline(mod1, col="orange")
+mod1= summary(lm(Mn.g3$meanAbs ~ Mn.g3$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="red")
 mod1= summary(lm(Mn.g1.f$meanAbs ~ Mn.g1.f$year))
 mod.p= mod1$coefficients[2,4]
 if(mod.p<0.05)abline(mod1, col="lightblue")
 mod1= summary(lm(Mn.g2.f$meanAbs ~ Mn.g2.f$year))
 mod.p= mod1$coefficients[2,4]
 if(mod.p<0.05)abline(mod1, col="gold")
+mod1= summary(lm(Mn.g3.f$meanAbs ~ Mn.g3.f$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="pink")
 
-popViewport()
+# popViewport()
+
+#----------------------------
+#FITNESS
+
+# #Draw base plot
+# pushViewport(viewport(layout.pos.col = 2, layout.pos.row = 1))
+# par(fig = gridFIG(), new = TRUE)
+
+with(Mn.g1,plot(year,meanLambda,type = "l", lwd= 2, col="blue",  xlab="",ylab = "",xlim=c(1960,2010), ylim=c(1,2.4), yaxt="n"))
+with(Mn.g2, lines(year,meanLambda, lty=1, lwd=2,col="orange"))
+with(Mn.g3,lines(year,meanLambda,lty=1, lwd= 2, col="red"))
+axis(2, seq(1,2.4,0.4), seq(1,2.4,0.4))
+#add fixed
+with(Mn.g1.f,lines(year,meanLambda,lty=1, lwd= 2, col="lightblue"))
+with(Mn.g2.f,lines(year,meanLambda,lty=1, lwd= 2, col="gold")) 
+with(Mn.g3.f,lines(year,meanLambda,lty=1, lwd= 2, col="pink"))
+
+#plot significant regressions
+mod1= summary(lm(Mn.g1$meanLambda ~ Mn.g1$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="blue")
+mod1= summary(lm(Mn.g2$meanLambda ~ Mn.g2$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="orange")
+mod1= summary(lm(Mn.g3$meanLambda ~ Mn.g3$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="red")
+mod1= summary(lm(Mn.g1.f$meanLambda ~ Mn.g1.f$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="lightblue")
+mod1= summary(lm(Mn.g2.f$meanLambda ~ Mn.g2.f$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="gold")
+mod1= summary(lm(Mn.g3.f$meanLambda ~ Mn.g3.f$year))
+mod.p= mod1$coefficients[2,4]
+if(mod.p<0.05)abline(mod1, col="pink")
 
 #with(Mn.g1,plot(year,meanAbs,type = "l", lwd= 2, col="blue",  xlab="Year",ylab = "",xlim=c(1960,2010), ylim=c(0.4,0.7), yaxt="n"))
 #with(Mn.g2, lines(year,meanAbs, lty=1, lwd=2,col="orange"))
@@ -355,23 +524,23 @@ popViewport()
 #with(Mn.g2,lines(year,meanLambda,lty=1, lwd= 2, col="orange")) 
 #with(Mn.g3,lines(year,meanLambda,lty=1, lwd= 2, col="red")) 
 
-### ADD OPTIMAL REACTION NORMS FROM BELOW
+# ### ADD OPTIMAL REACTION NORMS FROM BELOW
+# 
+# #Draw ggplots
+# pushViewport(viewport(layout.pos.col = 3, layout.pos.row = 1))
+# print(H1, newpage = FALSE)
+# popViewport()
+# 
+# pushViewport(viewport(layout.pos.col = 3, layout.pos.row = 2))
+# print(H2, newpage = FALSE)
+# popViewport()
+# 
+# pushViewport(viewport(layout.pos.col = 3, layout.pos.row = 3))
+# print(H3, newpage = FALSE)
+# popViewport()
 
-#Draw ggplots
-pushViewport(viewport(layout.pos.col = 3, layout.pos.row = 1))
-print(H1, newpage = FALSE)
-popViewport()
-
-pushViewport(viewport(layout.pos.col = 3, layout.pos.row = 2))
-print(H2, newpage = FALSE)
-popViewport()
-
-pushViewport(viewport(layout.pos.col = 3, layout.pos.row = 3))
-print(H3, newpage = FALSE)
-popViewport()
-
-##add y-axis labels
-#mtext("Year", side=1, line=1, outer=TRUE, cex=1.5)
+#add y-axis labels
+mtext("Year", side=1, line=1, outer=TRUE, cex=1.5)
 
 dev.off()
 
@@ -382,6 +551,53 @@ dev.off()
 library(ggplot2)
 library(grid)
 
+#FIXED
+setwd(paste(fdir, "\\OUT\\", sep=""))
+#C1 site
+##Perfect plasticity results
+C1.PP<- read.csv(file="C1.fixed.PerfectPlastic.csv", header =T)
+C1P <- C1.PP[order(C1.PP$year,C1.PP$Tpup),]
+head(C1P)
+
+#CC = 51713 site
+CC.PP<- read.csv(file="Site51713.Fixed.PerfectPlastic.csv", header =T)
+CCP <- CC.PP[order(CC.PP$year,CC.PP$Tpup),]
+head(CCP)
+
+#site Montrose
+Mn.PP<- read.csv(file="Montrose.fixed.PerfectPlastic.csv", header =T)
+MnP <- Mn.PP[order(Mn.PP$year,Mn.PP$Tpup),]
+head(MnP)
+
+#------------------
+#Estimate reaction norms
+
+elevs= c(1.777,2.438,3.021)
+a20= 0.4226+0.06517*elevs
+slope= -0.083
+a15= a20 -0.0083*(15-20)
+a25= a20 -0.0083*(25-20)
+
+#Perfect RNs
+m<- ggplot(C1P, aes(x=Tpup, y=absopt, color=year))
+H1f<- m+geom_line(aes(group=year),size=1)+theme_bw()+xlim(10,30)+ylim(0.4,0.7)+scale_color_gradientn(colours=rainbow(10))+ theme(plot.background = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank())+theme(axis.line = element_line(color = 'black'),axis.text.x=element_text(size=17),axis.text.y=element_text(size=17),axis.title.x=element_text(size=20, vjust=0.1),axis.title.y=element_text(size=20, angle=90,vjust=0.25),legend.title=element_text(size=17), legend.text=element_text(size=15))+xlab("")+ylab("")+
+  theme(plot.margin = unit(c(2,2,2,2), "mm"))+
+  theme(legend.position=c(0.8,0.7))  +geom_segment(aes(x = as.numeric(15), y = a15[3], xend = as.numeric(25), yend = a25[3] ), color="black", lwd=2) +annotate("text", x=20,y=0.7, label= "Fixed phenology", size=8)
+#+geom_segment(aes(x = as.numeric(15), y = as.numeric(0.7), xend = as.numeric(25), yend = as.numeric(0.4), colour = "black", show.legend=FALSE))
+
+k<- ggplot(CCP, aes(x=Tpup, y=absopt, color=year))
+H2f<- k+geom_line(aes(group=year),size=1)+theme_bw()+xlim(10,30)+ylim(0.4,0.7)+scale_color_gradientn(colours=rainbow(10))+ theme(plot.background = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank())+theme(axis.line = element_line(color = 'black'),axis.text.x=element_text(size=17),axis.text.y=element_text(size=17),axis.title.x=element_text(size=20, vjust=0.1),axis.title.y=element_text(size=20, angle=90,vjust=0.25),legend.title=element_text(size=17), legend.text=element_text(size=15))+xlab("")+ylab("Absorptivity")+
+  theme(plot.margin = unit(c(2,2,2,2), "mm"))+
+  theme(legend.position="none") +geom_segment(aes(x = as.numeric(15), y = a15[2], xend = as.numeric(25), yend = a25[2]), color="black", lwd=2) 
+
+
+h<- ggplot(MnP, aes(x=Tpup, y=absopt, color=year))
+H3f<- h+geom_line(aes(group=year),size=1)+theme_bw()+xlim(10,30)+ylim(0.4,0.7)+scale_color_gradientn(colours=rainbow(10))+ theme(plot.background = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank())+theme(axis.line = element_line(color = 'black'),axis.text.x=element_text(size=17),axis.text.y=element_text(size=17),axis.title.x=element_text(size=20, vjust=0.1),axis.title.y=element_text(size=20, angle=90,vjust=0.25),legend.title=element_text(size=17), legend.text=element_text(size=15))+xlab("Pupal temperature (°C)")+ylab("")+
+  theme(plot.margin = unit(c(2,2,2,2), "mm"))+
+  theme(legend.position="none") +geom_segment(aes(x = as.numeric(15), y = a15[1], xend = as.numeric(25), yend = a25[1]), color="black", lwd=2) 
+
+#===============================
+#VARYING
 setwd(paste(fdir, "\\OUT\\", sep=""))
 #C1 site
 C1.EvoRN<- read.csv(file="Evo.output.Site1.Varying.2gens.EvolvingRN.csv", header =T)
@@ -448,7 +664,7 @@ a25= a20 -0.0083*(25-20)
 m<- ggplot(C1P, aes(x=Tpup, y=absopt, color=year))
 H1<- m+geom_line(aes(group=year),size=1)+theme_bw()+xlim(10,30)+ylim(0.4,0.7)+scale_color_gradientn(colours=rainbow(10))+ theme(plot.background = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank())+theme(axis.line = element_line(color = 'black'),axis.text.x=element_text(size=17),axis.text.y=element_text(size=17),axis.title.x=element_text(size=20, vjust=0.1),axis.title.y=element_text(size=20, angle=90,vjust=0.25),legend.title=element_text(size=17), legend.text=element_text(size=15))+xlab("")+ylab("")+
   theme(plot.margin = unit(c(2,2,2,2), "mm"))+
-  theme(legend.position=c(0.8,0.7))  +geom_segment(aes(x = as.numeric(15), y = a15[3], xend = as.numeric(25), yend = a25[3] ), color="black", lwd=2) 
+  theme(legend.position=c(0.8,0.7))  +geom_segment(aes(x = as.numeric(15), y = a15[3], xend = as.numeric(25), yend = a25[3] ), color="black", lwd=2) +annotate("text", x=23,y=0.7, label= "Varying phenology", size=8)
 #+geom_segment(aes(x = as.numeric(15), y = as.numeric(0.7), xend = as.numeric(25), yend = as.numeric(0.4), colour = "black", show.legend=FALSE))
 
 k<- ggplot(CCP, aes(x=Tpup, y=absopt, color=year))
@@ -483,17 +699,28 @@ g_legend<-function(a.gplot){
 legend<-g_legend(G1n)
 
 #----------------------------
+# setwd(paste(fdir, "Figures\\", sep="") )
+# library(gridExtra)
+# 
+# pdf("Fig4_ReactionNorm.pdf", height=10,width=10)
+# 
+# lheight <- sum(legend$height)
+# #p <- arrangeGrob(H1, G1, H2, G2, H3, G3, ncol=2, left=textGrob("Absorptivity", rot = 90, gp=gpar(fontsize=20)))
+# p <- arrangeGrob(H1f, H1, H2f, H2, H3f, H3, ncol=2, left=textGrob("Absorptivity", rot = 90, gp=gpar(fontsize=20)))
+# theight <- unit(20, "points")
+# p <- arrangeGrob(p, textGrob("Pupal Temperature (?C)", gp=gpar(fontsize=20)), heights=unit.c(unit(1, "npc") - theight, theight))
+# p <- arrangeGrob(p, legend, heights=unit.c(unit(1, "npc") - lheight, lheight), ncol=1)
+# print(p)
+# 
+# dev.off()
+
+#-------------------------------------
 setwd(paste(fdir, "Figures\\", sep="") )
 library(gridExtra)
 
 pdf("Fig4_ReactionNorm.pdf", height=10,width=10)
 
-lheight <- sum(legend$height)
-p <- arrangeGrob(H1, G1, H2, G2, H3, G3, ncol=2, left=textGrob("Absorptivity", rot = 90, gp=gpar(fontsize=20)))
-theight <- unit(20, "points")
-p <- arrangeGrob(p, textGrob("Pupal Temperature (?C)", gp=gpar(fontsize=20)), heights=unit.c(unit(1, "npc") - theight, theight))
-p <- arrangeGrob(p, legend, heights=unit.c(unit(1, "npc") - lheight, lheight), ncol=1)
-print(p)
+grid_arrange_shared_legend(H1f, H1, H2f, H2, H3f, H3, ncol = 2, nrow = 3)
 
 dev.off()
 
