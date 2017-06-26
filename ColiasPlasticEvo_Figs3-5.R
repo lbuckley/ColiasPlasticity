@@ -582,19 +582,19 @@ a25= a20 -0.0083*(25-20)
 m<- ggplot(C1P, aes(x=Tpup, y=absopt, color=year))
 H1f<- m+geom_line(aes(group=year),size=1)+theme_bw()+xlim(10,30)+ylim(0.4,0.7)+scale_color_gradientn(colours=rainbow(10))+ theme(plot.background = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank())+theme(axis.line = element_line(color = 'black'),axis.text.x=element_text(size=17),axis.text.y=element_text(size=17),axis.title.x=element_text(size=20, vjust=0.1),axis.title.y=element_text(size=20, angle=90,vjust=0.25),legend.title=element_text(size=17), legend.text=element_text(size=15))+xlab("")+ylab("")+
   theme(plot.margin = unit(c(2,2,2,2), "mm"))+
-  theme(legend.position=c(0.8,0.7))  +geom_segment(aes(x = as.numeric(15), y = a15[3], xend = as.numeric(25), yend = a25[3] ), color="black", lwd=2) +annotate("text", x=20,y=0.7, label= "Fixed phenology", size=8)
+  theme(legend.position=c(0.8,0.7))  +geom_segment(aes(x = as.numeric(15), y = a15[3], xend = as.numeric(25), yend = a25[3] ), color="black", lwd=1, linetype="dashed") +annotate("text", x=25,y=0.7, label= "Fixed phenology", size=7)
 #+geom_segment(aes(x = as.numeric(15), y = as.numeric(0.7), xend = as.numeric(25), yend = as.numeric(0.4), colour = "black", show.legend=FALSE))
 
 k<- ggplot(CCP, aes(x=Tpup, y=absopt, color=year))
 H2f<- k+geom_line(aes(group=year),size=1)+theme_bw()+xlim(10,30)+ylim(0.4,0.7)+scale_color_gradientn(colours=rainbow(10))+ theme(plot.background = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank())+theme(axis.line = element_line(color = 'black'),axis.text.x=element_text(size=17),axis.text.y=element_text(size=17),axis.title.x=element_text(size=20, vjust=0.1),axis.title.y=element_text(size=20, angle=90,vjust=0.25),legend.title=element_text(size=17), legend.text=element_text(size=15))+xlab("")+ylab("Absorptivity")+
   theme(plot.margin = unit(c(2,2,2,2), "mm"))+
-  theme(legend.position="none") +geom_segment(aes(x = as.numeric(15), y = a15[2], xend = as.numeric(25), yend = a25[2]), color="black", lwd=2) 
+  theme(legend.position="none") +geom_segment(aes(x = as.numeric(15), y = a15[2], xend = as.numeric(25), yend = a25[2]), color="black", lwd=1, linetype="dashed") 
 
 
 h<- ggplot(MnP, aes(x=Tpup, y=absopt, color=year))
 H3f<- h+geom_line(aes(group=year),size=1)+theme_bw()+xlim(10,30)+ylim(0.4,0.7)+scale_color_gradientn(colours=rainbow(10))+ theme(plot.background = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank())+theme(axis.line = element_line(color = 'black'),axis.text.x=element_text(size=17),axis.text.y=element_text(size=17),axis.title.x=element_text(size=20, vjust=0.1),axis.title.y=element_text(size=20, angle=90,vjust=0.25),legend.title=element_text(size=17), legend.text=element_text(size=15))+xlab("Pupal temperature (°C)")+ylab("")+
   theme(plot.margin = unit(c(2,2,2,2), "mm"))+
-  theme(legend.position="none") +geom_segment(aes(x = as.numeric(15), y = a15[1], xend = as.numeric(25), yend = a25[1]), color="black", lwd=2) 
+  theme(legend.position="none") +geom_segment(aes(x = as.numeric(15), y = a15[1], xend = as.numeric(25), yend = a25[1]), color="black", lwd=1, linetype="dashed") 
 
 #===============================
 #VARYING
@@ -664,19 +664,19 @@ a25= a20 -0.0083*(25-20)
 m<- ggplot(C1P, aes(x=Tpup, y=absopt, color=year))
 H1<- m+geom_line(aes(group=year),size=1)+theme_bw()+xlim(10,30)+ylim(0.4,0.7)+scale_color_gradientn(colours=rainbow(10))+ theme(plot.background = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank())+theme(axis.line = element_line(color = 'black'),axis.text.x=element_text(size=17),axis.text.y=element_text(size=17),axis.title.x=element_text(size=20, vjust=0.1),axis.title.y=element_text(size=20, angle=90,vjust=0.25),legend.title=element_text(size=17), legend.text=element_text(size=15))+xlab("")+ylab("")+
   theme(plot.margin = unit(c(2,2,2,2), "mm"))+
-  theme(legend.position=c(0.8,0.7))  +geom_segment(aes(x = as.numeric(15), y = a15[3], xend = as.numeric(25), yend = a25[3] ), color="black", lwd=2) +annotate("text", x=23,y=0.7, label= "Varying phenology", size=8)
+  theme(legend.position=c(0.8,0.7))  +geom_segment(aes(x = as.numeric(15), y = a15[3], xend = as.numeric(25), yend = a25[3] ), color="black", lwd=1, linetype="dashed") +annotate("text", x=23,y=0.7, label= "Varying phenology", size=7)
 #+geom_segment(aes(x = as.numeric(15), y = as.numeric(0.7), xend = as.numeric(25), yend = as.numeric(0.4), colour = "black", show.legend=FALSE))
 
 k<- ggplot(CCP, aes(x=Tpup, y=absopt, color=year))
 H2<- k+geom_line(aes(group=year),size=1)+theme_bw()+xlim(10,30)+ylim(0.4,0.7)+scale_color_gradientn(colours=rainbow(10))+ theme(plot.background = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank())+theme(axis.line = element_line(color = 'black'),axis.text.x=element_text(size=17),axis.text.y=element_text(size=17),axis.title.x=element_text(size=20, vjust=0.1),axis.title.y=element_text(size=20, angle=90,vjust=0.25),legend.title=element_text(size=17), legend.text=element_text(size=15))+xlab("")+ylab("Absorptivity")+
   theme(plot.margin = unit(c(2,2,2,2), "mm"))+
-  theme(legend.position="none") +geom_segment(aes(x = as.numeric(15), y = a15[2], xend = as.numeric(25), yend = a25[2]), color="black", lwd=2) 
+  theme(legend.position="none") +geom_segment(aes(x = as.numeric(15), y = a15[2], xend = as.numeric(25), yend = a25[2]), color="black", lwd=1, linetype="dashed") 
           
 
 h<- ggplot(MnP, aes(x=Tpup, y=absopt, color=year))
 H3<- h+geom_line(aes(group=year),size=1)+theme_bw()+xlim(10,30)+ylim(0.4,0.7)+scale_color_gradientn(colours=rainbow(10))+ theme(plot.background = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank())+theme(axis.line = element_line(color = 'black'),axis.text.x=element_text(size=17),axis.text.y=element_text(size=17),axis.title.x=element_text(size=20, vjust=0.1),axis.title.y=element_text(size=20, angle=90,vjust=0.25),legend.title=element_text(size=17), legend.text=element_text(size=15))+xlab("Pupal temperature (°C)")+ylab("")+
   theme(plot.margin = unit(c(2,2,2,2), "mm"))+
-  theme(legend.position="none") +geom_segment(aes(x = as.numeric(15), y = a15[1], xend = as.numeric(25), yend = a25[1]), color="black", lwd=2) 
+  theme(legend.position="none") +geom_segment(aes(x = as.numeric(15), y = a15[1], xend = as.numeric(25), yend = a25[1]), color="black", lwd=1, linetype="dashed") 
 # +annotate("text", x=26.0,y=0.68, label= "1.8km", size=5)
 #+theme(legend.key.width = unit(2, "cm"))
 
@@ -1009,6 +1009,9 @@ c(var(C1.g1.f$beta),var(C1.g2.f$beta))
 c(var(C1.g1$meanAbs),var(C1.g2$meanAbs))
 c(var(C1.g1.f$meanAbs),var(C1.g2.f$meanAbs))
 
+c(var(C1.g1$meanLambda),var(C1.g2$meanLambda))
+c(var(C1.g1.f$meanLambda),var(C1.g2.f$meanLambda))
+
 #------------------------
 c(var(CC.g1$beta),var(CC.g2$beta),var(CC.g3$beta))
 c(var(CC.g1.f$beta),var(CC.g2.f$beta),var(CC.g3.f$beta))
@@ -1016,12 +1019,24 @@ c(var(CC.g1.f$beta),var(CC.g2.f$beta),var(CC.g3.f$beta))
 c(var(CC.g1$meanAbs),var(CC.g2$meanAbs),var(CC.g3$meanAbs))
 c(var(CC.g1.f$meanAbs),var(CC.g2.f$meanAbs),var(CC.g3.f$meanAbs))
 
+c(var(CC.g1$meanLambda),var(CC.g2$meanLambda),var(CC.g3$meanLambda))
+c(var(CC.g1.f$meanLambda),var(CC.g2.f$meanLambda),var(CC.g3.f$meanLambda))
+
 #------------------------
 c(var(Mn.g1$beta),var(Mn.g2$beta),var(Mn.g3$beta))
 c(var(Mn.g1.f$beta),var(Mn.g2.f$beta),var(Mn.g3.f$beta))
 
 c(var(Mn.g1$meanAbs),var(Mn.g2$meanAbs),var(Mn.g3$meanAbs))
 c(var(Mn.g1.f$meanAbs),var(Mn.g2.f$meanAbs),var(Mn.g3.f$meanAbs))
+
+c(var(Mn.g1$meanLambda),var(Mn.g2$meanLambda),var(Mn.g3$meanLambda))
+c(var(Mn.g1.f$meanLambda),var(Mn.g2.f$meanLambda),var(Mn.g3.f$meanLambda))
+
+
+#Delta fitness
+summary(Mn.g1.f$meanLambda-Mn.g1$meanLambda) 
+
+summary((Mn.g1.f$meanLambda-Mn.g1$meanLambda)/Mn.g1.f$meanLambda) 
 
 #-----------------
 #Benefit of plasticity
